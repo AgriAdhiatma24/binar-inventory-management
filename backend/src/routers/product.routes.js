@@ -9,5 +9,6 @@ if (process.env.NODE_ENV === "production") {
 
 const productRouter = express();
 productRouter.get("/products", productController.getAllProducts);
+productRouter.put("/:id", productController.updateProduct);
 
 module.exports = productRouter;
