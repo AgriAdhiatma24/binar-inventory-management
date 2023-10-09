@@ -17,4 +17,19 @@ getAllProducts = async (_req, res) => {
   }
 };
 
-module.exports = { getAllProducts };
+updateProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const updatedData = req.body;
+
+    const updatedProduct = await productModel.editProduct(productId, updatedData)
+    return res
+      .status(200)
+      .json(okResp("Successfully updated product", updatedProduct));
+  } catch (e) {
+    console.error("Error updating product: ", e);
+    return res.status(e.code || 500).json(errorResp(e.message));
+  }
+}
+
+module.exports = { getAllProducts, updateProduct };
