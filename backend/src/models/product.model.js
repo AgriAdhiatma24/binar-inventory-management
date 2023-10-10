@@ -9,12 +9,20 @@ const loadProducts = async () => {
   }
 };
 
+const getSingleProduct = async (id) => {
+  try {
+    return await db.select("*").from("product").where({ id }).first();
+  } catch (e) {
+    throw new ErrorServer(e.detail);
+  }
+};
+
 const editProduct = async (productId, updatedData) => {
   try {
-    const [updatedProduct] = await db('product')
+    const [updatedProduct] = await db("product")
       .where({ id: productId })
       .update(updatedData)
-      .returning('*');
+      .returning("*");
 
     if (!updatedProduct) {
       throw new ErrorNotFound(`Product with ID ${productId} not found`);
@@ -26,4 +34,4 @@ const editProduct = async (productId, updatedData) => {
   }
 };
 
-module.exports = { loadProducts, editProduct };
+module.exports = { loadProducts, editProduct, getSingleProduct };
