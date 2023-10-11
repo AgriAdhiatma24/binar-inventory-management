@@ -16,4 +16,22 @@ getCategories = async (_req, res) => {
       }
 }
 
-module.exports = { getCategories }
+createNewCategory = async(req, res) => {
+    try {
+        const newCategory = req.body
+
+        if (!newCategory.name){
+            return res.status(401).json(errorResp("name is required"));
+        }
+
+        const addedCategory = await productCategoryModel.addCategory(newCategory)
+        return res
+        .status(200)
+        .json(okResp("Successfully create product", addedCategory));
+    } catch (e) {
+        console.error("Error creating product category: ", e);
+        return res.status(e.code || 500).json(errorResp(e.message));
+    }
+}
+
+module.exports = { getCategories, createNewCategory }
