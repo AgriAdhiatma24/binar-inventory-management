@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const { userProfileController } = require("../controllers");
+const verifyToken = require("../middlewares/auth");
 
 if (process.env.NODE_ENV === "production") {
   dotenv.config({ path: "../.env.production" });
@@ -9,8 +10,20 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const userProfileRouter = express();
-userProfileRouter.get("/:userId", userProfileController.getUserProfile); //Done
-userProfileRouter.put("/:userId", userProfileController.updateUserProfile); //Done
-userProfileRouter.delete("/:userId", userProfileController.deleteUserProfile); // Done
+userProfileRouter.get(
+  "/:userId",
+  verifyToken,
+  userProfileController.getUserProfile
+); //Done
+userProfileRouter.put(
+  "/:userId",
+  verifyToken,
+  userProfileController.updateUserProfile
+); //Done
+userProfileRouter.delete(
+  "/:userId",
+  verifyToken,
+  userProfileController.deleteUserProfile
+); // Done
 
 module.exports = userProfileRouter;
