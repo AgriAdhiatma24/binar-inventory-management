@@ -9,10 +9,10 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const userRouter = express();
-userRouter.post("/register", userController.registerUser); //Done
-userRouter.get("/users", userController.getUsers); //Done
-userRouter.put("/:id", userController.updatePassword); //Done
-userRouter.delete("/:id", userController.deleteUserAndProfile); //Done
-userRouter.post("/login", userController.isLogin); //Done
+userRouter.post("/register", userController.registerUser);
+userRouter.get("/users", userController.getUsers);
+userRouter.put("/:id", userController.updatePassword);
+userRouter.delete("/:id", userController.deleteUserAndProfile);
+userRouter.post("/login", userController.isLogin);
 
 module.exports = userRouter;
