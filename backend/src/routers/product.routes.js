@@ -11,5 +11,14 @@ const productRouter = express();
 productRouter.get("/products", productController.getAllProducts);
 productRouter.put("/:id", productController.updateProduct);
 productRouter.get("/:id", productController.getOneProduct);
+productRouter.get("/products/count", productController.getTotalProductCount);
+productRouter.get(
+  "/products/store-values",
+  productController.getTotalStoreValue
+);
+productRouter.get(
+  "/products/out-of-stock",
+  productController.getOutOfStockItemsWithCount
+);
 
 module.exports = productRouter;
