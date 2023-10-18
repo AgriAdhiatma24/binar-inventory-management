@@ -34,4 +34,14 @@ productRouter.get(
 );
 productRouter.post("/add", productController.insertProductController);
 productRouter.delete("/:id", productController.deleteProductController);
+productRouter.get("/products/count", productController.getTotalProductCount);
+productRouter.get(
+  "/products/store-values",
+  productController.getTotalStoreValue
+);
+productRouter.get(
+  "/products/out-of-stock",
+  productController.getOutOfStockItemsWithCount
+);
+
 module.exports = productRouter;
