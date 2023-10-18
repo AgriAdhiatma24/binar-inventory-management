@@ -49,50 +49,43 @@ updateProduct = async (req, res) => {
   }
 };
 
-getTotalProductCount = async (req, res) => {
+insertProductController = async (req, res) => {
   try {
-    const totalCount = await productModel.getTotalProductCount();
-    return res
-      .status(200)
-      .json(okResp("Successfully get product count", totalCount));
-  } catch (e) {
-    console.error("Error get product count: ", e);
-    return res.status(e.code || 500).json(errorResp(e.message));
+    const { name, price, stock_amount, image_url, category_id } = req.body;
+
+    const newProductData = {
+      name,
+      price,
+      stock_amount,
+      image_url,
+      category_id,
+    };
+    const addedProduct = await productModel.addProduct(newProductData);
+
+    res.status(201).json({ success: true, product: addedProduct });
+  } catch (error) {
+    console.error("Error adding product:", error.message);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
 
-getTotalStoreValue = async (req, res) => {
+deleteProductController = async (req, res) => {
   try {
-    const totalStoreValue = await productModel.getTotalStoreValue();
-    return res
-      .status(200)
-      .json(okResp("Successfully get store value", totalStoreValue));
-  } catch (e) {
-    return res.status(e.code || 500).json(errorResp(e.message));
-  }
-};
+    const productId = req.params.id;
 
-getOutOfStockItemsWithCount = async (req, res) => {
-  try {
-    const { outOfStockItems, outOfStockItemsCount } =
-      await productModel.getOutOfStockProducts();
-    console.log(outOfStockItems);
-    return res.status(200).json(
-      okResp("Successfully get out of stock items", {
-        outOfStockItems,
-        outOfStockItemsCount,
-      })
-    );
-  } catch (e) {
-    return res.status(e.code || 500).json(errorResp(e.message));
+    const result = await productModel.deleteProduct(productId);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error deleting product:", error.message);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
 
 module.exports = {
+  deleteProductController,
+  insertProductController,
   getAllProducts,
   getOneProduct,
   updateProduct,
-  getTotalProductCount,
-  getTotalStoreValue,
-  getOutOfStockItemsWithCount,
 };
