@@ -49,4 +49,50 @@ updateProduct = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, getOneProduct, updateProduct };
+getTotalProductCount = async (req, res) => {
+  try {
+    const totalCount = await productModel.getTotalProductCount();
+    return res
+      .status(200)
+      .json(okResp("Successfully get product count", totalCount));
+  } catch (e) {
+    console.error("Error get product count: ", e);
+    return res.status(e.code || 500).json(errorResp(e.message));
+  }
+};
+
+getTotalStoreValue = async (req, res) => {
+  try {
+    const totalStoreValue = await productModel.getTotalStoreValue();
+    return res
+      .status(200)
+      .json(okResp("Successfully get store value", totalStoreValue));
+  } catch (e) {
+    return res.status(e.code || 500).json(errorResp(e.message));
+  }
+};
+
+getOutOfStockItemsWithCount = async (req, res) => {
+  try {
+    const { outOfStockItems, outOfStockItemsCount } =
+      await productModel.getOutOfStockProducts();
+    console.log(outOfStockItems);
+    return res.status(200).json(
+      okResp("Successfully get out of stock items", {
+        outOfStockItems,
+        outOfStockItemsCount,
+      })
+    );
+  } catch (e) {
+    return res.status(e.code || 500).json(errorResp(e.message));
+  }
+};
+
+module.exports = {
+  getAllProducts,
+  getOneProduct,
+  updateProduct,
+  getTotalProductCount,
+  getTotalStoreValue,
+  getOutOfStockItemsWithCount,
+};
