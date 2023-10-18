@@ -11,5 +11,6 @@ const productRouter = express();
 productRouter.get("/products", productController.getAllProducts);
 productRouter.put("/:id", productController.updateProduct);
 productRouter.get("/:id", productController.getOneProduct);
-
+productRouter.post("/add", productController.insertProductController);
+productRouter.delete("/:id", productController.deleteProductController);
 module.exports = productRouter;

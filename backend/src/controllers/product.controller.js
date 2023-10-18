@@ -49,4 +49,43 @@ updateProduct = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, getOneProduct, updateProduct };
+insertProductController = async (req, res) => {
+  try {
+    const { name, price, stock_amount, image_url, category_id } = req.body;
+
+    const newProductData = {
+      name,
+      price,
+      stock_amount,
+      image_url,
+      category_id,
+    };
+    const addedProduct = await productModel.addProduct(newProductData);
+
+    res.status(201).json({ success: true, product: addedProduct });
+  } catch (error) {
+    console.error("Error adding product:", error.message);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
+deleteProductController = async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    const result = await productModel.deleteProduct(productId);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error deleting product:", error.message);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
+module.exports = {
+  deleteProductController,
+  insertProductController,
+  getAllProducts,
+  getOneProduct,
+  updateProduct,
+};
