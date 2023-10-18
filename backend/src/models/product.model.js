@@ -104,8 +104,6 @@ module.exports = {
   loadProducts,
   editProduct,
   getSingleProduct,
-  deleteProduct,
-  addProduct,
   loadProducts,
   editProduct,
   getSingleProduct,
