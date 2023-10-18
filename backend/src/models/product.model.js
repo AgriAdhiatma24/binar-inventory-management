@@ -34,49 +34,36 @@ const editProduct = async (productId, updatedData) => {
   }
 };
 
-const getTotalProductCount = async () => {
+const addProduct = async (newProductData) => {
   try {
-    const countProduct = await db("product").count("id as totalCount").first();
-    return countProduct.totalCount;
-  } catch (e) {
-    throw new ErrorServer(e.message);
+    const [addedProduct] = await db("product")
+      .insert(newProductData)
+      .returning("*");
+
+    return addedProduct;
+  } catch (error) {
+    throw new Error(`Error adding product: ${error.message}`);
   }
 };
 
-const getTotalStoreValue = async () => {
+const deleteProduct = async (productId) => {
   try {
-    const products = await db("product").select(
-      "id",
-      "name",
-      "price",
-      "stock_amount"
-    );
-    const totalStoreValue = products.reduce((total, product) => {
-      return total + product.price * product.stock_amount;
-    }, 0);
-    return totalStoreValue;
-  } catch (e) {
-    throw new ErrorServer(e.message);
-  }
-};
+    const rowsDeleted = await db("product").where({ id: productId }).del();
 
-const getOutOfStockProducts = async () => {
-  try {
-    const outOfStockItems = await db("product")
-      .select("name")
-      .where("stock_amount", 0);
-    const outOfStockItemsCount = outOfStockItems.length;
-    return { outOfStockItems, outOfStockItemsCount };
-  } catch (e) {
-    throw new ErrorServer(e.message);
+    if (rowsDeleted === 0) {
+      throw new Error(`Product with ID ${productId} not found`);
+    }
+
+    return { success: true, message: "Product deleted successfully" };
+  } catch (error) {
+    throw new Error(`Error deleting product: ${error.message}`);
   }
 };
 
 module.exports = {
+  deleteProduct,
+  addProduct,
   loadProducts,
   editProduct,
   getSingleProduct,
-  getTotalProductCount,
-  getTotalStoreValue,
-  getOutOfStockProducts,
 };
