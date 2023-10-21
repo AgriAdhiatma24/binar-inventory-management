@@ -3,18 +3,20 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullname, setFullname] = useState("");
   const [resp, setResp] = useState({});
 
-  const handleLogin = () => {
+  const handleRegister = async () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
       email,
       password,
+      fullname,
     });
 
     var requestOptions = {
@@ -24,14 +26,15 @@ export default function Login() {
       redirect: "follow",
     };
 
-    fetch("http://localhost:9000", requestOptions)
+    fetch("http://localhost:9000/", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        localStorage.setItem("accessToken", result.data.access_token);
         setResp(result);
+        navigate("/sign-in");
       })
       .catch((error) => console.log("error", error));
   };
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
       <div className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-xl">
@@ -39,7 +42,7 @@ export default function Login() {
           Binar Inventory Management
         </h1>
         <h2 className="text-xl font-bold text-center text-gray-700">
-          Login Form
+          Register Form
         </h2>
         <form className="mt-6">
           <div className="mb-4">
@@ -61,7 +64,7 @@ export default function Login() {
               htmlFor="password"
               className="block text-sm font-semibold text-gray-800"
             >
-              Password
+              Masukan Password Anda
             </label>
             <input
               type="password"
@@ -70,13 +73,26 @@ export default function Login() {
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
           </div>
-
+          <div className="mb-2">
+            <label
+              htmlFor="text"
+              className="block text-sm font-semibold text-gray-800"
+            >
+              Full Name
+            </label>
+            <input
+              type="text"
+              value={fullname}
+              onChange={(e) => setFullname(e.target.value)}
+              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            />
+          </div>
           <div className="mt-2">
             <button
-              onClick={handleLogin}
+              onClick={handleRegister}
               className="w-full px-4 mt-6 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
             >
-              Sign In
+              Daftar
             </button>
             <pre>{JSON.stringify(resp, null, 2)}</pre>
           </div>
