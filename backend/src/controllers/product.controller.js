@@ -143,7 +143,9 @@ insertProductController = async (req, res) => {
     res.status(201).json({ success: true, product: addedProduct });
   } catch (error) {
     console.error("Error adding product:", error.message);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
+    return res
+      .status(200)
+      .json(okResp("Successfully add new Product", addedProduct));
   }
 };
 
@@ -156,7 +158,7 @@ deleteProductController = async (req, res) => {
     res.status(200).json(result);
   } catch (error) {
     console.error("Error deleting product:", error.message);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
+    return res.status(e.code || 500).json(errorResp(e.message));
   }
 };
 
