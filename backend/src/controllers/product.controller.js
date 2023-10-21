@@ -62,10 +62,12 @@ insertProductController = async (req, res) => {
     };
     const addedProduct = await productModel.addProduct(newProductData);
 
-    res.status(201).json({ success: true, product: addedProduct });
+    return res
+      .status(200)
+      .json(okResp("Successfully add new Product", addedProduct));
   } catch (error) {
     console.error("Error adding product:", error.message);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
+    return res.status(e.code || 500).json(errorResp(e.message));
   }
 };
 
@@ -75,10 +77,10 @@ deleteProductController = async (req, res) => {
 
     const result = await productModel.deleteProduct(productId);
 
-    res.status(200).json(result);
+    res.status(200).json(okResp(`Successfully delete ${result}`, addedProduct));
   } catch (error) {
     console.error("Error deleting product:", error.message);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
+    return res.status(e.code || 500).json(errorResp(e.message));
   }
 };
 
