@@ -248,6 +248,14 @@ main .insight > div:hover {
   box-shadow: none;
 }
 
+.dashboard-card-icon {
+  height: 40px;
+  width: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 main .insight > div.balance span {
   background: var(--color-primary);
   padding: 0.5rem;
