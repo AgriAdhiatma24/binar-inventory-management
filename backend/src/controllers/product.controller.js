@@ -88,6 +88,40 @@ getOutOfStockItemsWithCount = async (req, res) => {
   }
 };
 
+insertProductController = async (req, res) => {
+  try {
+    const { name, price, stock_amount, image_url, category_id } = req.body;
+
+    const newProductData = {
+      name,
+      price,
+      stock_amount,
+      image_url,
+      category_id,
+    };
+    const addedProduct = await productModel.addProduct(newProductData);
+
+    return res
+      .status(200)
+      .json(okResp("Successfully add new Product", addedProduct));
+  } catch (error) {
+    console.error("Error adding product:", error.message);
+    return res.status(e.code || 500).json(errorResp(e.message));
+  }
+};
+
+deleteProductController = async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    const result = await productModel.deleteProduct(productId);
+
+    res.status(200).json(okResp(`Successfully delete ${result}`, addedProduct));
+  } catch (error) {
+    console.error("Error deleting product:", error.message);
+    return res.status(e.code || 500).json(errorResp(e.message));
+  }
+};
 module.exports = {
   getAllProducts,
   getOneProduct,
@@ -95,4 +129,6 @@ module.exports = {
   getTotalProductCount,
   getTotalStoreValue,
   getOutOfStockItemsWithCount,
+  deleteProductController,
+  insertProductController,
 };

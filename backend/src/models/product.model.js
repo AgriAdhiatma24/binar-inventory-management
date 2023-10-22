@@ -72,6 +72,32 @@ const getOutOfStockProducts = async () => {
   }
 };
 
+const addProduct = async (newProductData) => {
+  try {
+    const [addedProduct] = await db("product")
+      .insert(newProductData)
+      .returning("*");
+
+    return addedProduct;
+  } catch (error) {
+    throw new Error(`Error adding product: ${error.message}`);
+  }
+};
+
+const deleteProduct = async (productId) => {
+  try {
+    const rowsDeleted = await db("product").where({ id: productId }).del();
+
+    if (rowsDeleted === 0) {
+      throw new Error(`Product with ID ${productId} not found`);
+    }
+
+    return { success: true, message: "Product deleted successfully" };
+  } catch (error) {
+    throw new Error(`Error deleting product: ${error.message}`);
+  }
+};
+
 module.exports = {
   loadProducts,
   editProduct,
@@ -79,4 +105,6 @@ module.exports = {
   getTotalProductCount,
   getTotalStoreValue,
   getOutOfStockProducts,
+  addProduct,
+  deleteProduct,
 };

@@ -20,5 +20,7 @@ productRouter.get(
   "/products/out-of-stock",
   productController.getOutOfStockItemsWithCount
 );
+productRouter.post("/add", productController.insertProductController);
+productRouter.delete("/:id", productController.deleteProductController);
 
 module.exports = productRouter;
