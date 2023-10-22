@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "concurrently": "^8.2.1",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "lucide-react": "^0.288.0"
   },
   "name": "binar-inventory-management",
   "version": "1.0.0",
