@@ -103,9 +103,8 @@ insertProductController = async (req, res) => {
 
     return res
       .status(200)
-      .json(okResp("Successfully add new Product", addedProduct));
-  } catch (error) {
-    console.error("Error adding product:", error.message);
+      .json(okResp("Successfully add product", addedProduct));
+  } catch (e) {
     return res.status(e.code || 500).json(errorResp(e.message));
   }
 };
@@ -116,9 +115,8 @@ deleteProductController = async (req, res) => {
 
     const result = await productModel.deleteProduct(productId);
 
-    res.status(200).json(okResp(`Successfully delete ${result}`, addedProduct));
-  } catch (error) {
-    console.error("Error deleting product:", error.message);
+    return res.status(200).json(okResp("Successfully delete product", result));
+  } catch (e) {
     return res.status(e.code || 500).json(errorResp(e.message));
   }
 };
