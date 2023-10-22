@@ -115,7 +115,9 @@ deleteProductController = async (req, res) => {
 
     const result = await productModel.deleteProduct(productId);
 
-    return res.status(200).json(okResp("Successfully delete product", result));
+    return res
+      .status(200)
+      .json(okResp("Successfully deleting product", result));
   } catch (e) {
     return res.status(e.code || 500).json(errorResp(e.message));
   }
