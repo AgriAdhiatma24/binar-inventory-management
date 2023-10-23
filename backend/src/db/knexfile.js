@@ -21,17 +21,15 @@ module.exports = {
     },
   },
 
-  testing: {
+  test: {
     client: "sqlite3",
-    connection: {
-      filename: ":memory:",
-    },
+    connection: ":memory:",
     useNullAsDefault: true,
     migrations: {
-      directory: "../__tests__/db/migrations",
+      directory: "./__test__/migrations",
     },
     seeds: {
-      directory: "../__tests__/db/seeds",
+      directory: "./__test__/seeds",
     },
   },
 
