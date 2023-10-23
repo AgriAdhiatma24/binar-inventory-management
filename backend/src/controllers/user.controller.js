@@ -62,9 +62,13 @@ const isLogin = async (req, res) => {
           expiresIn: "1h",
         }
       );
-      return res
-        .status(201)
-        .json(okResp("Login Sucessfully", { access_token: access_token }));
+
+      return res.status(201).json(
+        okResp("Login Sucessfully", {
+          access_token: access_token,
+          refresh_token: refresh_token,
+        })
+      );
     } else {
       res.status(403).json(errorResp("Invalid Credentials"));
     }

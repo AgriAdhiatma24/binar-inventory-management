@@ -19,4 +19,21 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+const verifyRefreshToken = (req, res, next) => {
+  const token = req.headers.authorization;
+  const refresh_token = token.split(" ")[1];
+
+  if (!refresh_token) {
+    return res.status(401).json(errorResp("Refresh token is missing"));
+  }
+
+  jwt.verify(refresh_token, REFRESH_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json(errorResp("Invalid Refresh Token"));
+    }
+    req.userId = decoded.userId;
+    next();
+  });
+};
+
 module.exports = verifyToken;
