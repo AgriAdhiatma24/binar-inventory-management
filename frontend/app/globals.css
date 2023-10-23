@@ -328,11 +328,11 @@
   }
 
   /*========== Right Side ============*/
-  .right-side .top button {
+  .navbar .top button {
     display: none;
   }
 
-  .right-side .profile-photo {
+  .navbar .profile-photo {
     background: lightblue;
     border: var(--color-danger) solid 1px;
     border-radius: 50%;
@@ -340,21 +340,21 @@
     height: 40px;
   }
 
-  .right-side {
+  .navbar {
     margin-top: 1.4rem;
   }
 
-  .right-side .top {
+  .navbar .top {
     display: flex;
     gap: 2rem;
     justify-content: end;
   }
 
-  .right-side .top .theme-toggler {
+  .navbar .top .theme-toggler {
     display: flex;
   }
 
-  .right-side .top .theme-toggler {
+  .navbar .top .theme-toggler {
     display: flex;
     height: 1.6rem;
     width: 4.2rem;
@@ -365,7 +365,7 @@
     cursor: pointer;
   }
 
-  .right-side .top .theme-toggler span {
+  .navbar .top .theme-toggler span {
     font-size: 1.2rem;
     width: 50%;
     height: 100%;
@@ -374,23 +374,23 @@
     justify-content: center;
   }
 
-  .right-side .top .theme-toggler span.active {
+  .navbar .top .theme-toggler span.active {
     background: var(--color-primary);
     color: white;
     border-radius: var(--border-radius-1);
   }
 
-  .right-side .top .account-info {
+  .navbar .top .account-info {
     display: flex;
     text-align: right;
     gap: 2rem;
   }
 
-  .right-side .add-new-transaction {
+  .navbar .add-new-transaction {
     margin-top: 2rem;
   }
 
-  .right-side .add-new-transaction h2 {
+  .navbar .add-new-transaction h2 {
     margin-bottom: 1rem;
   }
 
@@ -664,7 +664,7 @@
       margin: 0 auto 4rem;
     }
 
-    .right-side .top {
+    .navbar .top {
       position: fixed;
       top: 0;
       left: 0;
@@ -678,17 +678,17 @@
       box-shadow: 0 1rem 1rem var(--color-light);
     }
 
-    .right-side .top .theme-toggler {
+    .navbar .top .theme-toggler {
       width: 4.4rem;
       position: absolute;
       left: 66%;
     }
 
-    .right-side .profile {
+    .navbar .profile {
       display: none;
     }
 
-    .right-side .top button {
+    .navbar .top button {
       display: inline-block;
       background: transparent;
       cursor: pointer;
