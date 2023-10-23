@@ -1,6 +1,5 @@
 import Navbar from '@/components/navbar';
 import Sidebar from '@/components/sidebar';
-import RightSide from '@/components/right-side';
 
 export default function MainLayout({ children }) {
   return (
