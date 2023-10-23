@@ -1,8 +1,6 @@
 export default function Home() {
   return (
     <main>
-      <h1>Dashboard</h1>
-
       <div class='month-dropdown'>
         <select name='month' id='month'>
           <option value='current'>Current Month</option>

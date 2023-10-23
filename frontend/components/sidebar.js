@@ -38,7 +38,7 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside>
+    <aside className='w-64'>
       <div className='top'>
         <div className='logo'>
           <div className='text-2xl font-bold'>Expenses App</div>
