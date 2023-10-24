@@ -80,7 +80,6 @@
     outline: 0;
     box-sizing: border-box;
     outline: none;
-    border: none;
     text-decoration: none;
   }
 
@@ -91,7 +90,7 @@
   body {
     width: 100vw;
     height: 100vh;
-    font-family: poppins, sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.88rem;
     background-color: var(--color-background);
     user-select: none;
@@ -215,7 +214,7 @@
   /* Card Insight */
   main .insight {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
   }
 
@@ -412,36 +411,36 @@
   }
 
   /* Form Styling */
-  .right-side .transaction-form {
+  .transaction-form {
     transition: all 300ms ease;
   }
 
-  .right-side .transaction-form.hide {
+  .transaction-form.hide {
     visibility: hidden;
     opacity: 0;
   }
 
-  .right-side .transaction-form {
+  .transaction-form {
     margin-top: 2rem;
   }
 
-  .right-side .transaction-form ul.form-style li {
+  .transaction-form ul.form-style li {
     display: block;
     list-style: none;
     margin-top: 1rem;
     padding: 0;
   }
 
-  .right-side .transaction-form ul.form-style label {
+  .transaction-form ul.form-style label {
     display: block;
     font-weight: 600;
   }
 
-  .right-side .form-style input[type='text'],
-  .right-side .form-style input[type='date'],
-  .right-side .form-style input[type='datetime'],
-  .right-side .form-style input[type='number'],
-  .right-side textarea,
+  .form-style input[type='text'],
+  .form-style input[type='date'],
+  .form-style input[type='datetime'],
+  .form-style input[type='number'],
+  textarea,
   select {
     background: var(--color-white);
     font-family: poppins, sans-serif;
@@ -452,23 +451,19 @@
     outline: none;
   }
 
-  .right-side .form-style input[type='text']:focus,
-  .right-side .form-style input[type='date']:focus,
-  .right-side .form-style input[type='datetime']:focus,
-  .right-side .form-style input[type='number']:focus,
-  .right-side .form-style textarea:focus,
-  .right-side .form-style select:focus {
+  .form-style input[type='text']:focus,
+  .form-style input[type='date']:focus,
+  .form-style input[type='datetime']:focus,
+  .form-style input[type='number']:focus,
+  .form-style textarea:focus,
+  .form-style select:focus {
     -moz-box-shadow: 0 0 8px #88d5e9;
     -webkit-box-shadow: 0 0 8px #88d5e9;
     box-shadow: 0 0 8px #88d5e9;
     border: 1px solid #88d5e9;
   }
 
-  .right-side .form-style .field-long {
-    width: 100%;
-  }
-
-  .right-side .form-style .field-textarea {
+  .form-style .field-textarea {
     height: 5rem;
     resize: none;
   }

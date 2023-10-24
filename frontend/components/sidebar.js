@@ -2,11 +2,11 @@
 
 import {
   LayoutGrid,
-  Package,
   Folder,
   PieChart,
   User2,
   LogOut,
+  PackagePlus,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -18,9 +18,9 @@ const items = [
     href: '/',
   },
   {
-    label: 'Inventory',
-    icon: <Package size={20} />,
-    href: '/inventory',
+    label: 'Add Product',
+    icon: <PackagePlus size={20} />,
+    href: '/inventory/product/add',
   },
   {
     label: 'Categories',

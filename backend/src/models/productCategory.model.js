@@ -1,5 +1,5 @@
 const db = require("../db/db.config");
-const { ErrorServer, ErrorUserInput } = require("../utils/errorHandlers");
+const { ErrorServer, ErrorUserInput, ErrorNotFound } = require("../utils/errorHandlers");
 
 const loadCategories = async () => {
     try {
@@ -33,4 +33,38 @@ const addCategory = async (newCategory) => {
     }
 }
 
-  module.exports = { loadCategories, addCategory }
+const deleteCategory = async (categoryId) => {
+  try {
+    const [deletedCategory] = await db("product_category")
+      .where({id: categoryId})
+      .del()
+      .returning("*")
+
+      if (!deletedCategory) {
+        throw new ErrorNotFound(`Category with ID ${categorytId} not found`);
+      }
+
+      return deletedCategory
+  } catch (e) {
+    throw new ErrorServer(e.detail);
+  }
+}
+
+const editCategory = async (categoryId, updatedData) => {
+  try {
+    const [updatedCategory] = await db("product_category")
+      .where({id: categoryId})
+      .update(updatedData)
+      .returning("*")
+
+      if (!updatedCategory) {
+        throw new ErrorNotFound(`Category with ID ${categorytId} not found`);
+      }
+
+      return updatedCategory
+  } catch (e) {
+    throw new ErrorServer(e.detail);
+  }
+}
+
+  module.exports = { loadCategories, addCategory, deleteCategory, editCategory }
