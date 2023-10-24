@@ -47,5 +47,22 @@ deleteCategory = async(req, res) => {
         return res.status(e.code || 500).json(errorResp(e.message));
     }
 }
+updateCategory = async(req, res) => {
+    try {
+        const categoryId = req.params.id
+        const updatedData = req.body
 
-module.exports = { getCategories, createNewCategory, deleteCategory }
+        const updatedCategory = await productCategoryModel.editCategory(
+            categoryId,
+            updatedData
+          );
+        return res
+        .status(200)
+        .json(okResp("Successfully updated product category", updatedCategory));
+    } catch (e) {
+        console.error("Error updating product category: ", e);
+        return res.status(e.code || 500).json(errorResp(e.message));
+    }
+}
+
+module.exports = { getCategories, createNewCategory, deleteCategory, updateCategory }

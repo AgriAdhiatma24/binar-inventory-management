@@ -50,4 +50,21 @@ const deleteCategory = async (categoryId) => {
   }
 }
 
-  module.exports = { loadCategories, addCategory, deleteCategory }
+const editCategory = async (categoryId, updatedData) => {
+  try {
+    const [updatedCategory] = await db("product_category")
+      .where({id: categoryId})
+      .update(updatedData)
+      .returning("*")
+
+      if (!updatedCategory) {
+        throw new ErrorNotFound(`Category with ID ${categorytId} not found`);
+      }
+
+      return updatedCategory
+  } catch (e) {
+    throw new ErrorServer(e.detail);
+  }
+}
+
+  module.exports = { loadCategories, addCategory, deleteCategory, editCategory }
