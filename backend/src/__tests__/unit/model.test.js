@@ -1,5 +1,9 @@
-const { productModel, productCategoryModel, user } = require("../../models");
-const { ErrorServer, ErrorNotFound } = require("../../utils/errorHandlers");
+const {
+  productModel,
+  productCategoryModel,
+  user,
+  userProfile,
+} = require("../../models");
 const { runMigration, destroyConnection } = require("../../db/run-migrations");
 
 /*-----------------------PRODUCT MODEL-------------------------------------------------------*/
@@ -330,7 +334,7 @@ describe("editCategory", () => {
   });
 });
 
-/*-----------------------PRODUCT CATEGORY MODEL-------------------------------------------------------*/
+/*-----------------------USER MODEL-------------------------------------------------------*/
 // ================= TEST SUITE 1 ==================================
 describe("createUser", () => {
   beforeAll(async () => {
@@ -428,5 +432,107 @@ describe("deleteUser", () => {
     const userId = "d4991e9e-e681-4007-b27f-518fa0524ce8";
     const deletedRows = await user.deleteUser(userId);
     expect(deletedRows).toBe(1);
+  });
+});
+
+/*-----------------------USER PROFILE MODEL-------------------------------------------------------*/
+// ================= TEST SUITE 1 ==================================
+describe("getUserProfileByUserId", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should retrieve a user profile by a valid user ID", async () => {
+    const userId = "24ca04d6-67bc-4594-a9d1-b824717b64f0";
+
+    const userProfileData = await userProfile.getUserProfileByUserId(userId);
+
+    expect(userProfileData).not.toBeUndefined();
+    expect(userProfileData.user_id).toBe(userId); // Assuming there's a 'user_id' property in the user profile data
+  });
+});
+
+// ================= TEST SUITE 2 ==================================
+describe("createUserProfile", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should create a user profile", async () => {
+    // Define the user profile data
+    const mockUserProfile = {
+      user_id: "24ca04d6-67bc-4594-a9d1-b824717b64f0",
+      full_name: "John Doe",
+      date_of_birth: "1999-01-01",
+      address: "Central Java, Indonesia",
+    };
+
+    // Call the createUserProfile function
+    const result = await userProfile.createUserProfile(mockUserProfile);
+
+    // Assert that the result is not empty or undefined
+    expect(result).toBeDefined();
+  });
+});
+
+// ================= TEST SUITE 3 ==================================
+describe("updateUserProfile", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should update a user profile", async () => {
+    const mock = {
+      user_id: "24ca04d6-67bc-4594-a9d1-b824717b64f0",
+      full_name: "John Doeyok",
+      date_of_birth: "10-10-2010",
+      address: "Indonesia",
+    };
+
+    // Call the updateUserProfile function
+    const result = await userProfile.updateUserProfile(
+      mock.user_id,
+      mock.full_name,
+      mock.date_of_birth,
+      mock.address
+    );
+
+    expect(result).toBeTruthy();
+    const updatedUserProfile = await userProfile.getUserProfileByUserId(
+      mock.user_id
+    );
+
+    expect(updatedUserProfile.full_name).toBe(mock.full_name);
+  });
+});
+
+// ================= TEST SUITE 4 ==================================
+describe("deleteUserProfile", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should delete an existing user profile", async () => {
+    const userId = "24ca04d6-67bc-4594-a9d1-b824717b64f0";
+
+    const deletionResult = await userProfile.deleteUserProfile(userId);
+
+    expect(deletionResult).toBe(1); // Assuming a successful deletion returns 1
   });
 });
