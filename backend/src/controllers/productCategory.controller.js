@@ -27,11 +27,25 @@ createNewCategory = async(req, res) => {
         const addedCategory = await productCategoryModel.addCategory(newCategory)
         return res
         .status(200)
-        .json(okResp("Successfully create product", addedCategory));
+        .json(okResp("Successfully create product category", addedCategory));
     } catch (e) {
         console.error("Error creating product category: ", e);
         return res.status(e.code || 500).json(errorResp(e.message));
     }
 }
 
-module.exports = { getCategories, createNewCategory }
+deleteCategory = async(req, res) => {
+    try {
+        const categoryId = req.params.id;
+
+        const deletedCategory = await productCategoryModel.deleteCategory(categoryId)
+        return res
+        .status(200)
+        .json(okResp("Successfully delete product category", deletedCategory));
+    } catch (e) {
+        console.error("Error deleting product category: ", e);
+        return res.status(e.code || 500).json(errorResp(e.message));
+    }
+}
+
+module.exports = { getCategories, createNewCategory, deleteCategory }
