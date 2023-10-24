@@ -11,8 +11,14 @@ async function runMigration() {
   }
 }
 
+async function destroyConnection() {
+  if (db) {
+    await db.destroy();
+  }
+}
+
 async function rollbackMigration() {
   await db.migrate.rollback();
 }
 
-module.exports = { runMigration, rollbackMigration };
+module.exports = { runMigration, rollbackMigration, destroyConnection };

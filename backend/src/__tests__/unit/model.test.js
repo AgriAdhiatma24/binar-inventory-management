@@ -1,7 +1,8 @@
-const { productModel } = require("../../models");
-const db = require("../../db/db.config");
+const { productModel, productCategoryModel, user } = require("../../models");
 const { ErrorServer, ErrorNotFound } = require("../../utils/errorHandlers");
-const { runMigration } = require("../../db/run-migrations");
+const { runMigration, destroyConnection } = require("../../db/run-migrations");
+
+/*-----------------------PRODUCT MODEL-------------------------------------------------------*/
 
 // ======================Test suite 1======================================
 describe("loadProducts", () => {
@@ -10,9 +11,7 @@ describe("loadProducts", () => {
   });
 
   afterAll(async () => {
-    if (db) {
-      await db.destroy();
-    }
+    await destroyConnection();
   });
 
   // Test 1
@@ -27,7 +26,6 @@ describe("loadProducts", () => {
     };
 
     const results = await productModel.loadProducts();
-    console.log(results[0]);
     expect(results[0].id).toBe(sampleProducts.id);
   });
 });
@@ -39,7 +37,7 @@ describe("getSingleProduct", () => {
   });
 
   afterAll(async () => {
-    await db.destroy();
+    await destroyConnection();
   });
 
   test("should return the same product", async () => {
@@ -52,14 +50,14 @@ describe("getSingleProduct", () => {
   });
 });
 
-// =========================Test Suite 3=========================================
+// // =========================Test Suite 3=========================================
 describe("editProduct", () => {
   beforeAll(async () => {
     await runMigration();
   });
 
   afterAll(async () => {
-    await db.destroy();
+    await destroyConnection();
   });
 
   // Test case 1: Updating an existing product
@@ -95,14 +93,14 @@ describe("editProduct", () => {
   });
 });
 
-// =================== TEST SUITE 4 =========================
+// // =================== TEST SUITE 4 =========================
 describe("get product count", () => {
   beforeAll(async () => {
     await runMigration();
   });
 
   afterAll(async () => {
-    await db.destroy();
+    await destroyConnection();
   });
 
   test("should return the total product count", async () => {
@@ -112,14 +110,14 @@ describe("get product count", () => {
   });
 });
 
-// ================= TEST SUITE 5 =========================
+// // ================= TEST SUITE 5 =========================
 describe("getTotalStoreValue", () => {
   beforeAll(async () => {
     await runMigration();
   });
 
   afterAll(async () => {
-    await db.destroy();
+    await destroyConnection();
   });
 
   it("should calculate the total store value correctly", async () => {
@@ -151,14 +149,14 @@ describe("getTotalStoreValue", () => {
   });
 });
 
-// ================ TEST SUITE 6 ==========================
+// // ================ TEST SUITE 6 ==========================
 describe("getOutOfStockProducts", () => {
   beforeAll(async () => {
     await runMigration();
   });
 
   afterAll(async () => {
-    await db.destroy();
+    await destroyConnection();
   });
 
   it("should return an empty array and a count of zero when there are no out-of-stock products", async () => {
@@ -171,14 +169,14 @@ describe("getOutOfStockProducts", () => {
   });
 });
 
-// ================= TEST SUITE 7 ==============================
+// // ================= TEST SUITE 7 ==============================
 describe("addProduct", () => {
   beforeAll(async () => {
     await runMigration();
   });
 
   afterAll(async () => {
-    await db.destroy();
+    await destroyConnection();
   });
 
   // Test case 1: Adding a new product
@@ -192,6 +190,7 @@ describe("addProduct", () => {
       category_id: "a2bfdf4b-6961-4861-a629-5c243d004f95",
     };
 
+    console.log(newProductData);
     // Call the addProduct function
     const resp = await productModel.addProduct(newProductData);
 
@@ -204,14 +203,14 @@ describe("addProduct", () => {
   });
 });
 
-// =============== TEST SUITE 8 ===========================
+// // =============== TEST SUITE 8 ===========================
 describe("deleteProduct", () => {
   beforeAll(async () => {
     await runMigration();
   });
 
   afterAll(async () => {
-    await db.destroy();
+    await destroyConnection();
   });
 
   it("should delete an existing product", async () => {
@@ -230,5 +229,204 @@ describe("deleteProduct", () => {
 
     expect(result.success).toBe(true);
     expect(result.message).toBe("Product deleted successfully");
+  });
+});
+
+/*-----------------------PRODUCT CATEGORY MODEL-------------------------------------------------------*/
+// ================= TEST SUITE 1 ==================================
+describe("loadCategories", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should load product categories from the database", async () => {
+    const categories = await productCategoryModel.loadCategories();
+
+    expect(Array.isArray(categories)).toBe(true);
+  });
+});
+
+// ================= TEST SUITE 2 ==================================
+describe("addCategory", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should add a new category", async () => {
+    const newCategory = {
+      id: "cf9fb621-9bb4-4c0c-a4c2-c3d501b1cb50",
+      name: "Hardaware",
+    };
+    const addedCategory = await productCategoryModel.addCategory(newCategory);
+
+    expect(addedCategory.id).toBe(newCategory.id);
+    expect(addedCategory.name).toBe(newCategory.name);
+  });
+});
+
+// ================= TEST SUITE 3 ==================================
+describe("deleteCategory", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  // Test case 1: Deleting an existing category
+  it("should delete an existing category", async () => {
+    const categoryId = "a2bfdf4b-6961-4861-a629-5c243d004f95";
+
+    const resp = await productCategoryModel.deleteCategory(categoryId);
+
+    expect(resp.success).toBe(true);
+    expect(resp.message).toBe("Product category deleted successfully");
+  });
+
+  // Test case 2: Deleting a non-existent category
+  it("should throw an error when deleting a non-existent category", async () => {
+    // Create a non-existent categoryId
+    const categoryId = "12312312321";
+    await expect(
+      productCategoryModel.deleteCategory(categoryId)
+    ).rejects.toThrow(`server error: categorytId is not defined`);
+  });
+});
+
+// ================= TEST SUITE 4 ==================================
+describe("editCategory", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should edit an existing category", async () => {
+    const categoryId = "9ccd22dd-2b19-4772-80b1-17a5e832c64a";
+    const updatedData = {
+      name: "Updated Category Name",
+    };
+
+    // Call the editCategory function
+    const updatedCategory = await productCategoryModel.editCategory(
+      categoryId,
+      updatedData
+    );
+
+    // Assert that the updatedCategory matches the updated data
+    expect(updatedCategory.name).toBe(updatedData.name);
+    expect(updatedCategory.description).toBe(updatedData.description);
+  });
+});
+
+/*-----------------------PRODUCT CATEGORY MODEL-------------------------------------------------------*/
+// ================= TEST SUITE 1 ==================================
+describe("createUser", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should create a user with valid data", async () => {
+    const username = "user123";
+    const password = "user123";
+
+    const userId = await user.createUser(username, password);
+    expect(userId).not.toBeNull();
+  });
+});
+
+// ================= TEST SUITE 2 ==================================
+describe("getUserByUsername", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should fetch a user by a valid username", async () => {
+    const validUsername = "John_Doe";
+
+    const userResult = await user.getUserByUsername(validUsername);
+
+    expect(userResult).not.toBeUndefined();
+    expect(userResult.username).toBe(validUsername);
+  });
+});
+
+// ================= TEST SUITE 3 ==================================
+describe("getAllUser", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should retrieve all users from the database", async () => {
+    const users = await user.getAllUser();
+
+    expect(users[0]).toHaveProperty("id");
+    expect(users[0]).toHaveProperty("username");
+    expect(users[0]).toHaveProperty("hash_password");
+  });
+});
+
+// ================= TEST SUITE 4 ==================================
+describe("updateUserPassword", () => {
+  const bcrypt = require("bcrypt");
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should update a user password", async () => {
+    const userId = "24ca04d6-67bc-4594-a9d1-b824717b64f0";
+    const newPassword = "new-password";
+
+    // Mock the bcrypt.hash function to return a hashed password
+    const hash = 10;
+    const mockHash = jest.spyOn(bcrypt, "hash");
+    mockHash.mockResolvedValue("hashed-password");
+
+    const result = await user.updateUserPassword(userId, newPassword);
+    expect(result).toEqual(1); // function returns an array with the number of updated rows
+  });
+});
+
+// ================= TEST SUITE 5 ==================================
+describe("deleteUser", () => {
+  beforeAll(async () => {
+    await runMigration();
+  });
+
+  afterAll(async () => {
+    await destroyConnection();
+  });
+
+  it("should delete an existing user", async () => {
+    const userId = "d4991e9e-e681-4007-b27f-518fa0524ce8";
+    const deletedRows = await user.deleteUser(userId);
+    expect(deletedRows).toBe(1);
   });
 });
