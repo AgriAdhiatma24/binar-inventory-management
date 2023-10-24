@@ -1,9 +1,10 @@
 // Update with your config settings.
 const dotenv = require("dotenv");
 if (process.env.NODE_ENV === "production") {
-  dotenv.config({ path: "../.env.production" });
+  dotenv.config({ path: "../../../.env.production" });
 } else {
-  dotenv.config({ path: "../.env.development" });
+  // dotenv.config({ path: "../.env.development" });
+  dotenv.config({ path: "../../../.env.development" });
 }
 
 /**
@@ -14,10 +15,10 @@ module.exports = {
     client: "postgresql",
     connection: process.env.DATABASE_URI,
     migrations: {
-      directory: "./src/db/migrations",
+      directory: "./migrations",
     },
     seeds: {
-      directory: "./src/db/seeds",
+      directory: "./seeds",
     },
   },
 
@@ -26,10 +27,13 @@ module.exports = {
     connection: ":memory:",
     useNullAsDefault: true,
     migrations: {
-      directory: "./__test__/migrations",
+      // directory: "./__test__/migrations",
+      directory: "./src/db/migrations",
     },
     seeds: {
-      directory: "./__test__/seeds",
+      // directory: "./__test__/seeds",
+      // directory: "./seeds",
+      directory: "./src/db/seeds",
     },
   },
 

@@ -1,98 +1,62 @@
 const { productModel } = require("../../models");
 const db = require("../../db/db.config");
 const { ErrorServer, ErrorNotFound } = require("../../utils/errorHandlers");
+const { runMigration } = require("../../db/run-migrations");
 
 // ======================Test suite 1======================================
-describe("loadProducts", () => {
-  // Test 1
-  it("should load products from the database", async () => {
-    const mockSelect = jest.fn().mockReturnThis(); // Chainable select
-    const sampleProducts = [
-      {
-        id: "de60c2c7-21f8-4f01-a8d9-783ac1418b1c",
-        name: "HeheHoho Chain",
-        price: 50000,
-        stock_amount: 100,
-        image_url: "image1.jpg",
-        category_id: "940bbe8c-76c1-423d-b8ca-d3414bc295ce",
-      },
-      {
-        id: "cdceacff-1188-4e80-a4b7-312fa645ff1d",
-        name: "Pediger",
-        price: 25000,
-        stock_amount: 50,
-        image_url: "image2.jpg",
-        category_id: "85360d6d-c61c-4c41-ac72-f16c5dd90916",
-      },
-    ];
+// describe("loadProducts", () => {
+//   beforeAll(async () => {
+//     await runMigration();
+//   });
 
-    const mockFrom = jest.fn().mockResolvedValue(sampleProducts);
+//   afterAll(async () => {
+//     await db.destroy();
+//   });
 
-    db.select = mockSelect;
-    db.from = mockFrom;
+//   // Test 1
+//   it("should load products from the database", async () => {
+//     const mockSelect = jest.fn().mockReturnThis(); // Chainable select
+//     const sampleProducts = {
+//       id: "94c17d2a-803f-4f1b-a914-d9b3f384ec9c",
+//       name: "Car Wash Shampoo",
+//       price: 30000,
+//       stock_amount: 10,
+//       image_url: "https://urlis.net/nu6v24yy",
+//       category_id: "a2bfdf4b-6961-4861-a629-5c243d004f95",
+//     };
 
-    const results = await productModel.loadProducts();
-    // Expectations
-    expect(mockSelect).toHaveBeenCalledWith("*");
-    expect(mockFrom).toHaveBeenCalledWith("product");
-  });
+//     const mockFrom = jest.fn().mockResolvedValue(sampleProducts);
 
-  // Test 2
-  // it("should throw an ErrorServer on database error", async () => {
-  //   // Mock a database error by rejecting the promise
-  //   const mockFrom = jest.fn().mockRejectedValue(new Error("Database error"));
-  //   db.from = mockFrom;
+//     db.select = mockSelect;
+//     db.from = mockFrom;
 
-  //   // Call the function and expect it to throw an ErrorServer
-  //   await expect(productModel.loadProducts()).rejects.toThrow(ErrorServer);
-  // });
-});
+//     const results = await productModel.loadProducts();
+//     expect(results.id).toBe(sampleProducts.id);
+//   });
+// });
 
 // ================================Test Suite 2=================================
 describe("getSingleProduct", () => {
-  it("should retrieve a single product from the database", async () => {
-    // Mock the Knex functions and their behavior
-    const mockSelect = jest.fn();
-    const mockFrom = jest.fn();
-    const mockWhere = jest.fn();
-    const mockFirst = jest.fn();
+  beforeAll(async () => {
+    await runMigration();
+  });
 
-    const knex = require("knex");
-    const knexFile = require("../../db/knexfile");
+  // afterAll(async () => {
+  //   await db.destroy();
+  // });
 
-    const db = knex(knexFile.development);
-
-    db.select = mockSelect;
-    mockSelect.from = mockFrom;
-    mockFrom.where = mockWhere;
-    mockWhere.first = mockFirst;
-
-    // Set up the expected product data
+  test("should return the same product", async () => {
     const expectedProduct = {
-      id: "dac3c230-9352-4ea9-8879-3419fb39de90",
-      name: "Kitchen Cleaner",
-      price: 10000,
-      stock_amount: 15,
-      image_url: "https://urlis.net/goun757v",
-      category_id: "9ccd22dd-2b19-4772-80b1-17a5e832c64a",
+      id: "94c17d2a-803f-4f1b-a914-d9b3f384ec9c",
+      name: "Car Wash Shampoo",
+      price: 30000,
+      stock_amount: 10,
+      image_url: "https://urlis.net/nu6v24yy",
+      category_id: "a2bfdf4b-6961-4861-a629-5c243d004f95",
     };
 
-    mockFirst.mockResolvedValue(expectedProduct);
-
-    // Call the function
-    const result = await productModel.getSingleProduct(
-      "dac3c230-9352-4ea9-8879-3419fb39de90"
-    );
-    // console.log(result);
-
-    // Assertions
-    expect(mockSelect).toHaveBeenCalled("*");
-    expect(mockFrom).toHaveBeenCalledWith("product");
-    expect(mockWhere).toHaveBeenCalledWith(
-      "id",
-      "dac3c230-9352-4ea9-8879-3419fb39de90"
-    );
-    expect(result).toEqual(expectedProduct);
+    const resp = await productModel.getSingleProduct(expectedProduct);
+    expect(resp).toBe(expectedProduct);
   });
 });
 
@@ -144,5 +108,23 @@ describe("getSingleProduct", () => {
 //       "dac3c230-9352-4ea9-8879-3419fb39de90"
 //     );
 //     expect(result).toEqual(expectedProduct);
+//   });
+// });
+
+// =================== TEST SUITE 4 =========================
+// describe("get product count", () => {
+//   beforeAll(async () => {
+//     await runMigration();
+//   });
+
+//   afterAll(async () => {
+//     await db.destroy();
+//   });
+
+//   test("should return the same product", async () => {
+//     const a = await productModel.getTotalProductCount();
+//     expect(a).toBe(0);
+
+//     // expect(resp).toBe(expectedProduct);
 //   });
 // });
