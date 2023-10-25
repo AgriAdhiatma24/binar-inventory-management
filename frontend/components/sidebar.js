@@ -20,7 +20,7 @@ const items = [
   {
     label: 'Add Product',
     icon: <PackagePlus size={20} />,
-    href: '/inventory/product/add',
+    href: '/product/add',
   },
   {
     label: 'Categories',
