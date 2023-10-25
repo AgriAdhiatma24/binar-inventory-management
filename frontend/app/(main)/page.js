@@ -121,7 +121,7 @@ export default function Home() {
                   <td>{item.category_id}</td>
                   <td>
                     <Link
-                      href={`/inventory/product`}
+                      href={`/product/edit/${item.id}`}
                       className='bg-orange-500 hover:bg-orange-400 text-white py-0.5 px-2 text-sm inline-flex items-center gap-x-1 rounded mr-1'>
                       <Edit size={12} />
                       Edit
