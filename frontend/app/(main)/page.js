@@ -1,5 +1,6 @@
 'use client';
 
+import Modal from '@/components/modal';
 import axios from 'axios';
 import {
   DollarSign,
@@ -9,24 +10,51 @@ import {
   PackageX,
   Plus,
   Trash,
+  X,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function Home() {
   const [items, setItems] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  const getItemsData = async () => {
+    const response = await axios.get(
+      'http://localhost:9000/api/v1/product/products'
+    );
+    const { data } = response.data;
+    setItems(data);
+  };
 
   useEffect(() => {
-    const getItemsData = async () => {
-      const response = await axios.get(
-        'http://localhost:9000/api/v1/product/products'
-      );
-      const { data } = response.data;
-      setItems(data);
-    };
-
     getItemsData();
   }, []);
+
+  const onClick = (id) => {
+    setDeleteId(id);
+    setShowModal(true);
+  };
+
+  const onClose = () => {
+    setShowModal(false);
+    setDeleteId(null);
+  };
+
+  const onConfirm = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:9000/api/v1/product/${deleteId}`
+      );
+      getItemsData();
+    } catch (error) {
+      toast.error(error?.message || 'Something went wrong!');
+    } finally {
+      onClose();
+    }
+  };
 
   return (
     <main>
@@ -91,7 +119,7 @@ export default function Home() {
         <div className='flex justify-between items-start'>
           <h2 className='text-2xl font-bold mb-4'>Inventory Items</h2>
           <Link
-            href='inventory/product/add'
+            href='/product/add'
             className='bg-[var(--color-primary)] text-white flex items-center rounded-xl px-4 py-2 gap-x-2'>
             <Plus size={20} />
             Add Product
@@ -122,11 +150,13 @@ export default function Home() {
                   <td>
                     <Link
                       href={`/product/edit/${item.id}`}
-                      className='bg-orange-500 hover:bg-orange-400 text-white py-0.5 px-2 text-sm inline-flex items-center gap-x-1 rounded mr-1'>
+                      className='bg-[var(--color-warning)] hover:opacity-75 text-white py-0.5 px-2 text-sm inline-flex items-center gap-x-1 rounded mr-1'>
                       <Edit size={12} />
                       Edit
                     </Link>
-                    <button className='bg-red-500 hover:bg-red-400 text-white py-0.5 px-2 text-sm inline-flex items-center gap-x-1 rounded'>
+                    <button
+                      onClick={() => onClick(item.id)}
+                      className='bg-[var(--color-danger)] hover:opacity-75 text-white py-0.5 px-2 text-sm inline-flex items-center gap-x-1 rounded'>
                       <Trash size={12} />
                       Delete
                     </button>
@@ -138,6 +168,7 @@ export default function Home() {
         </div>
         {/* <a href='#'>Show All</a> */}
       </div>
+      <Modal isOpen={showModal} onClose={onClose} onConfirm={onConfirm} />
     </main>
   );
 }
