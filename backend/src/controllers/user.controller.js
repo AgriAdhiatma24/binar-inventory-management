@@ -49,6 +49,7 @@ const updatePassword = async (req, res) => {
 const isLogin = async (req, res) => {
   const { username, password } = req.body;
   const JWT_KEY = process.env.JWT_SECRET;
+  const JWT_REFRESH_KEY = process.env.JWT_REFRESH_SECRET;
   try {
     const userByUsername = await user.getUserByUsername(username);
     if (
@@ -62,9 +63,17 @@ const isLogin = async (req, res) => {
           expiresIn: "1h",
         }
       );
+
+      const refresh_token = jwt.sign(
+        { user: { user_id: userByUsername.id } },
+        JWT_REFRESH_KEY,
+        {
+          expiresIn: "7d",
+        }
+      );
       return res
         .status(201)
-        .json(okResp("Login Sucessfully", { access_token: access_token }));
+        .json(okResp("Login Sucessfully", { access_token, refresh_token }));
     } else {
       res.status(403).json(errorResp("Invalid Credentials"));
     }
