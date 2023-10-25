@@ -14,6 +14,7 @@ async function runMigration() {
 async function destroyConnection() {
   if (db) {
     await db.destroy();
+    console.log("Database closed");
   }
 }
 
