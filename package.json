@@ -7,7 +7,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start:dev": "set NODE_ENV=development&& concurrently \"cd backend&&run server\" \"cd frontend&&npm run client\"",
+    "start:dev": "set NODE_ENV=development&& concurrently \"cd backend&&npm run dev\" \"cd frontend&&npm run dev\"",
     "server:dev": "set NODE_ENV=development&& cd backend && nodemon server.js",
     "client:dev": "set NODE_ENV=development&& cd frontend && npm run dev",
     "start:prod": "set NODE_ENV=production&& concurrently \"cd backend&&run server\" \"cd frontend&&npm run client\"",

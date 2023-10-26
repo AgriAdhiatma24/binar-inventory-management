@@ -13,6 +13,7 @@ userRouter.post("/register", userController.registerUser);
 userRouter.get("/users", userController.getUsers);
 userRouter.put("/:id", userController.updatePassword);
 userRouter.delete("/:id", userController.deleteUserAndProfile);
-userRouter.post("/login", userController.isLogin);
+userRouter.post("/login", userController.loginController);
+userRouter.post("/logout", userController.logoutController);
 
 module.exports = userRouter;
