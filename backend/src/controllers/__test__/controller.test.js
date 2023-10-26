@@ -1,19 +1,19 @@
-const { productModel } = require("../../models");
-const { productController } = require("../../controllers");
+const { productModel, productCategoryModel, user } = require("../../models");
+const { productController, productCategoryController } = require("..");
 const { runMigration, destroyConnection } = require("../../db/run-migrations");
+const { isLogin } = require("../user.controller");
 
 /*-----------------------PRODUCT CONTROLLER-------------------------------------------------------*/
 
+beforeAll(async () => {
+  await runMigration();
+});
+
+afterAll(async () => {
+  await destroyConnection();
+});
 // ======================Test suite 1======================================
 describe("productController.getAllProducts", () => {
-  beforeAll(async () => {
-    await runMigration();
-  });
-
-  afterAll(async () => {
-    await destroyConnection();
-  });
-
   it("should fetch all products from the database", async () => {
     const req = {}; // Mock request
     const res = {
@@ -25,21 +25,12 @@ describe("productController.getAllProducts", () => {
 
     expect(res.status).toHaveBeenCalledWith(200); // Check if the response status is set to 200
     const responseJSON = res.json.mock.calls[0][0];
-    console.log(responseJSON);
     expect(res.json).toHaveBeenCalledWith(responseJSON);
   });
 });
 
 // ======================Test suite 2======================================
 describe("productController.getOneProduct", () => {
-  beforeAll(async () => {
-    await runMigration();
-  });
-
-  afterAll(async () => {
-    await destroyConnection();
-  });
-
   it("should fetch one product from the database", async () => {
     const req = {
       params: {
@@ -61,14 +52,6 @@ describe("productController.getOneProduct", () => {
 
 // ======================Test suite 3======================================
 describe("productController.updateProduct", () => {
-  beforeAll(async () => {
-    await runMigration();
-  });
-
-  afterAll(async () => {
-    await destroyConnection();
-  });
-
   it("should update a product in the database", async () => {
     const req = {
       params: { id: "94c17d2a-803f-4f1b-a914-d9b3f384ec9c" },
@@ -93,14 +76,6 @@ describe("productController.updateProduct", () => {
 
 // ======================Test suite 4======================================
 describe("productController.getTotalProductCount", () => {
-  beforeAll(async () => {
-    await runMigration();
-  });
-
-  afterAll(async () => {
-    await destroyConnection();
-  });
-
   it("should return the total product count", async () => {
     const req = {};
     const res = {
@@ -120,13 +95,6 @@ describe("productController.getTotalProductCount", () => {
 
 // ======================Test suite 5======================================
 describe("productController.getTotalStoreValue", () => {
-  beforeAll(async () => {
-    await runMigration();
-  });
-  afterAll(async () => {
-    await destroyConnection();
-  });
-
   it("should return the total store value", async () => {
     const req = {};
     const res = {
@@ -145,14 +113,6 @@ describe("productController.getTotalStoreValue", () => {
 
 // ======================Test suite 6======================================
 describe("productController.getOutOfStockItemsWithCount", () => {
-  beforeAll(async () => {
-    await runMigration();
-  });
-
-  afterAll(async () => {
-    await destroyConnection();
-  });
-
   it("should get out of stock items with count", async () => {
     productModel.getOutOfStockProducts = jest.fn(() => ({
       outOfStockItems: [
@@ -183,14 +143,6 @@ describe("productController.getOutOfStockItemsWithCount", () => {
 
 // ======================Test suite 7======================================
 describe("productController.insertProductController", () => {
-  beforeAll(async () => {
-    await runMigration();
-  });
-
-  afterAll(async () => {
-    await destroyConnection();
-  });
-
   it("should insert a product and return a response", async () => {
     const req = {
       body: {
@@ -218,14 +170,6 @@ describe("productController.insertProductController", () => {
 
 // ======================Test suite 8======================================
 describe("productController.deleteProductController", () => {
-  beforeAll(async () => {
-    await runMigration();
-  });
-
-  afterAll(async () => {
-    await destroyConnection();
-  });
-
   it("should delete a product and return a success response", async () => {
     const mockReq = {
       params: { id: "94c17d2a-803f-4f1b-a914-d9b3f384ec9c" },
@@ -254,6 +198,54 @@ describe("productController.deleteProductController", () => {
 /*-----------------------PRODUCT CATEGORY CONTROLLER-------------------------------------------------------*/
 
 // ======================Test suite 1======================================
+describe("getCategories", () => {
+  it("should return all product categories", async () => {
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    const mockCategories = [
+      {
+        id: "1",
+        name: "Category 1",
+      },
+      {
+        id: "2",
+        name: "Category 2",
+      },
+    ];
+    productCategoryModel.loadCategories = jest
+      .fn()
+      .mockResolvedValue(mockCategories);
+
+    // Call the controller function
+    await productCategoryController.getCategories({}, res);
+
+    // Assertions
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("should handle errors", async () => {
+    // Mock your Express response object
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    // Mock an error in the productCategoryModel
+    const errorMessage = "Database error";
+    productCategoryModel.loadCategories = jest
+      .fn()
+      .mockRejectedValue(new Error(errorMessage));
+
+    // Call the controller function
+    await productCategoryController.getCategories({}, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+  });
+});
+
 // ======================Test suite 2======================================
 // ======================Test suite 3======================================
 // ======================Test suite 4======================================
