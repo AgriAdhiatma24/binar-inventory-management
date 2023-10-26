@@ -17,6 +17,30 @@ const getSingleProduct = async (id) => {
   }
 };
 
+const getCategoryNameIdMapping = async () => {
+  const categoryData = await db("product_category").select("id", "name");
+  const categoryMap = {};
+  categoryData.forEach((category) => {
+    categoryMap[category.name] = category.id;
+  });
+  return categoryMap;
+};
+
+const getProductsByCategory = async (categoryId) => {
+  try {
+    const query = `
+    SELECT product.*
+    FROM product
+    INNER JOIN product_category ON product.category_id = product_category.id
+    WHERE product_category.id = ?
+  `;
+    const products = await db.raw(query, [categoryId]);
+    return products.rows;
+  } catch (e) {
+    throw new ErrorServer(e.message);
+  }
+};
+
 const editProduct = async (productId, updatedData) => {
   try {
     const [updatedProduct] = await db("product")
@@ -100,6 +124,7 @@ const deleteProduct = async (productId) => {
 
 module.exports = {
   loadProducts,
+  getProductsByCategory,
   editProduct,
   getSingleProduct,
   getTotalProductCount,
@@ -107,4 +132,5 @@ module.exports = {
   getOutOfStockProducts,
   addProduct,
   deleteProduct,
+  getCategoryNameIdMapping,
 };
