@@ -75,9 +75,12 @@ const loginController = async (req, res) => {
           expiresIn: "7d",
         }
       );
-      return res
-        .status(201)
-        .json(okResp("Login Sucessfully", { access_token, refresh_token }));
+      return res.status(201).json(
+        okResp("Login Sucessfully", {
+          access_token: access_token,
+          refresh_token: refresh_token,
+        })
+      );
     } else {
       res.status(403).json(errorResp("Invalid Credentials"));
     }

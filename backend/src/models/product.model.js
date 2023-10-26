@@ -5,15 +5,15 @@ const loadProducts = async () => {
   try {
     return await db.select("*").from("product");
   } catch (e) {
-    throw new ErrorServer(e.detail);
+    throw new ErrorServer(e.message);
   }
 };
 
 const getSingleProduct = async (id) => {
   try {
-    return await db.select("*").from("product").where({ id }).first();
+    return await db.select("*").from("product").where("id", id).first();
   } catch (e) {
-    throw new ErrorServer(e.detail);
+    throw new ErrorServer(e.message);
   }
 };
 
