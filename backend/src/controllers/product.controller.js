@@ -50,10 +50,17 @@ updateProduct = async (req, res) => {
     const productId = req.params.id;
     const updatedData = req.body;
 
+    const categoryMap = await getCategoryNameIdMapping();
+    const category_id = categoryMap[updatedData.category_name];
+
+    updatedData.category_id = category_id;
+    delete updatedData.category_name;
+
     const updatedProduct = await productModel.editProduct(
       productId,
       updatedData
     );
+
     return res
       .status(200)
       .json(okResp("Successfully updated product", updatedProduct));
