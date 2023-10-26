@@ -46,7 +46,11 @@ const updatePassword = async (req, res) => {
   }
 };
 
-const isLogin = async (req, res) => {
+const setToken = (access_token, refresh_token) => {
+  access_token, refresh_token;
+};
+
+const loginController = async (req, res) => {
   const { username, password } = req.body;
   const JWT_KEY = process.env.JWT_SECRET;
   const JWT_REFRESH_KEY = process.env.JWT_REFRESH_SECRET;
@@ -60,7 +64,7 @@ const isLogin = async (req, res) => {
         { user: { user_id: userByUsername.id } },
         JWT_KEY,
         {
-          expiresIn: "1h",
+          expiresIn: "1d",
         }
       );
 
@@ -83,6 +87,16 @@ const isLogin = async (req, res) => {
   }
 };
 
+const logoutController = (_req, res) => {
+  try {
+    setToken(null, null);
+    res.status(200).json(okResp("Logged out successfully"));
+  } catch (e) {
+    console.error("Failed to logout: ", e);
+    return res.status(e.code || 500).json(errorResp(e.message));
+  }
+};
+
 const deleteUserAndProfile = async (req, res) => {
   const id = req.params.id;
   try {
@@ -97,7 +111,8 @@ const deleteUserAndProfile = async (req, res) => {
 
 module.exports = {
   registerUser,
-  isLogin,
+  loginController,
+  logoutController,
   getUsers,
   updatePassword,
   deleteUserAndProfile,
