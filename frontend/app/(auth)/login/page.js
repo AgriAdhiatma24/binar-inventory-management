@@ -1,9 +1,14 @@
 "use client";
 import React, { useState } from "react";
+import { Icon } from "react-icons-kit";
+import { eyeOff } from "react-icons-kit/feather/eyeOff";
+import { eye } from "react-icons-kit/feather/eye";
 
 export default function Login() {
   const [notification, setNotification] = useState(null);
   const [errors, setErrors] = useState({});
+  const [type, setType] = useState("password");
+  const [icon, setIcon] = useState(eyeOff);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -14,9 +19,20 @@ export default function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const routeToDashboard = () => {
+  const routeToRegister = () => {
     window.location.href = "/register";
   };
+
+  const togglePasswordVisibility = () => {
+    if (type === "password") {
+      setIcon(eye);
+      setType("text");
+    } else {
+      setIcon(eyeOff);
+      setType("password");
+    }
+  };
+
   const fetchLogin = async (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -78,15 +94,15 @@ export default function Login() {
               htmlFor="username"
               className="block text-sm font-semibold text-gray-800"
             >
-              Enter Username
+              Username
             </label>
-
             <input
               id="username"
               name="username"
               type="text"
               value={formData.username}
               onChange={handleInputChange}
+              placeholder="Enter Username"
               className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40  ${
                 errors.username ? "border-red-500" : ""
               }`}
@@ -101,32 +117,51 @@ export default function Login() {
               htmlFor="password"
               className="block text-sm font-semibold text-gray-800"
             >
-              Enter Password
+              Password
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40  ${
-                errors.password ? "border-red-500" : ""
-              }`}
-            />
+            <div className="mb-4 flex">
+              <input
+                id="password"
+                name="password"
+                type={type}
+                value={formData.password}
+                placeholder="Enter Password"
+                onChange={handleInputChange}
+                className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40  ${
+                  errors.password ? "border-red-500" : ""
+                }`}
+              />
+              <span
+                className="flex items-center justify-center mt-1"
+                onClick={togglePasswordVisibility}
+              >
+                <Icon className="absolute mr-10" icon={icon} size={15} />
+              </span>
+            </div>
+
             {errors.password && (
               <p className="text-red-500 text-xs">{errors.password}</p>
             )}
           </div>
 
-          <h2 className="mb-2 text-sm pt-2">
-            Don't have an account?
+          <div className="flex justify-between items-center">
+            <h2 className="mb-2 text-sm pt-2">
+              Don't have an account?
+              <span
+                onClick={routeToRegister}
+                className="text-lime-600 cursor-pointer ml-1 font-bold"
+              >
+                Sign up
+              </span>
+            </h2>
+
             <span
-              onClick={routeToDashboard}
-              className="text-lime-600 cursor-pointer ml-1 font-bold"
+              onClick={routeToRegister}
+              className="cursor-pointer ml-1 font-bold"
             >
-              Sign up
+              Forgot Password?
             </span>
-          </h2>
+          </div>
 
           <div className="mt-2">
             <button
