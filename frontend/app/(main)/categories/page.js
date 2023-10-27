@@ -5,6 +5,7 @@ import { Edit, Plus, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import withAuth from '../../../utils/auth.js'
 
 const CategoriesPage = () => {
   const [items, setItems] = useState([]);
@@ -89,4 +90,4 @@ const CategoriesPage = () => {
   );
 };
 
-export default CategoriesPage;
+export default withAuth(CategoriesPage);

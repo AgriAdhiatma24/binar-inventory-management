@@ -155,4 +155,4 @@ const EditProductPage = () => {
   );
 };
 
-export default EditProductPage;
+export default withAuth(EditProductPage);

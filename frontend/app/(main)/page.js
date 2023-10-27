@@ -15,8 +15,9 @@ import {
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import withAuth from '@/utils/auth';
 
-export default function Home() {
+function Home() {
   const [items, setItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -172,3 +173,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default withAuth(Home)
