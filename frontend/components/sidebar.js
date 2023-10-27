@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import logout from '../utils/logout.js';
 
 const items = [
   {
@@ -65,7 +66,7 @@ const Sidebar = () => {
               <h3>Profile</h3>
             </a>
           </Link>
-          <a href='#' className='btn'>
+          <a className='btn' onClick={logout}>
             <LogOut size={20} />
             <h3>Logout</h3>
           </a>
