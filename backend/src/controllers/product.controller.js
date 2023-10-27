@@ -1,5 +1,7 @@
 const { productModel } = require("../models");
+const { getCategoryNameIdMapping } = require("../models/product.model");
 const { errorResp, okResp } = require("../utils/responseHandlers");
+const uuid = require("uuid");
 
 getAllProducts = async (_req, res) => {
   try {
@@ -31,15 +33,34 @@ getOneProduct = async (req, res) => {
   }
 };
 
+getProductByCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.categoryID;
+    const products = await productModel.getProductsByCategory(categoryId);
+    return res
+      .status(200)
+      .json(okResp("Sucessfully fetching product", products));
+  } catch (e) {
+    return res.status(e.code || 500).json(errorResp(e.message));
+  }
+};
+
 updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
     const updatedData = req.body;
 
+    const categoryMap = await getCategoryNameIdMapping();
+    const category_id = categoryMap[updatedData.category_name];
+
+    updatedData.category_id = category_id;
+    delete updatedData.category_name;
+
     const updatedProduct = await productModel.editProduct(
       productId,
       updatedData
     );
+
     return res
       .status(200)
       .json(okResp("Successfully updated product", updatedProduct));
@@ -90,9 +111,12 @@ getOutOfStockItemsWithCount = async (req, res) => {
 
 insertProductController = async (req, res) => {
   try {
-    const { name, price, stock_amount, image_url, category_id } = req.body;
+    const { name, price, stock_amount, image_url, category_name } = req.body;
+    const categoryMap = await getCategoryNameIdMapping();
+    const category_id = categoryMap[category_name];
 
     const newProductData = {
+      id: uuid.v4(),
       name,
       price,
       stock_amount,
@@ -125,6 +149,7 @@ deleteProductController = async (req, res) => {
 module.exports = {
   getAllProducts,
   getOneProduct,
+  getProductByCategory,
   updateProduct,
   getTotalProductCount,
   getTotalStoreValue,

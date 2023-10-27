@@ -11,6 +11,10 @@ const productRouter = express();
 productRouter.get("/products", productController.getAllProducts);
 productRouter.put("/:id", productController.updateProduct);
 productRouter.get("/:id", productController.getOneProduct);
+productRouter.get(
+  "/products/category/:categoryID",
+  productController.getProductByCategory
+);
 productRouter.get("/products/count", productController.getTotalProductCount);
 productRouter.get(
   "/products/store-values",

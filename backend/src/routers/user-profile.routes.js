@@ -12,17 +12,17 @@ if (process.env.NODE_ENV === "production") {
 const userProfileRouter = express();
 userProfileRouter.get(
   "/:userId",
-  // verifyToken,
+  verifyToken,
   userProfileController.getUserProfile
 );
 userProfileRouter.put(
   "/:userId",
-  // verifyToken,
+  verifyToken,
   userProfileController.updateUserProfile
 );
 userProfileRouter.delete(
   "/:userId",
-  // verifyToken,
+  verifyToken,
   userProfileController.deleteUserProfile
 );
 
