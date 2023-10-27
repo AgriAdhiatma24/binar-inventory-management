@@ -3,7 +3,7 @@ const { getCategoryNameIdMapping } = require("../models/product.model");
 const { errorResp, okResp } = require("../utils/responseHandlers");
 const uuid = require("uuid");
 
-getAllProducts = async (_req, res) => {
+const getAllProducts = async (_req, res) => {
   try {
     const products = await productModel.loadProducts();
     const mapProducts = products.map((product) => ({
@@ -19,7 +19,7 @@ getAllProducts = async (_req, res) => {
   }
 };
 
-getOneProduct = async (req, res) => {
+const getOneProduct = async (req, res) => {
   const id = req.params.id;
   try {
     const product = await productModel.getSingleProduct(id);
@@ -33,7 +33,7 @@ getOneProduct = async (req, res) => {
   }
 };
 
-getProductByCategory = async (req, res) => {
+const getProductByCategory = async (req, res) => {
   try {
     const categoryId = req.params.categoryID;
     const products = await productModel.getProductsByCategory(categoryId);
@@ -45,7 +45,7 @@ getProductByCategory = async (req, res) => {
   }
 };
 
-updateProduct = async (req, res) => {
+const updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
     const updatedData = req.body;
@@ -70,7 +70,7 @@ updateProduct = async (req, res) => {
   }
 };
 
-getTotalProductCount = async (req, res) => {
+const getTotalProductCount = async (req, res) => {
   try {
     const totalCount = await productModel.getTotalProductCount();
     return res
@@ -82,7 +82,7 @@ getTotalProductCount = async (req, res) => {
   }
 };
 
-getTotalStoreValue = async (req, res) => {
+const getTotalStoreValue = async (req, res) => {
   try {
     const totalStoreValue = await productModel.getTotalStoreValue();
     return res
@@ -93,7 +93,7 @@ getTotalStoreValue = async (req, res) => {
   }
 };
 
-getOutOfStockItemsWithCount = async (req, res) => {
+const getOutOfStockItemsWithCount = async (req, res) => {
   try {
     const { outOfStockItems, outOfStockItemsCount } =
       await productModel.getOutOfStockProducts();
@@ -109,7 +109,7 @@ getOutOfStockItemsWithCount = async (req, res) => {
   }
 };
 
-insertProductController = async (req, res) => {
+const insertProductController = async (req, res) => {
   try {
     const { name, price, stock_amount, image_url, category_name } = req.body;
     const categoryMap = await getCategoryNameIdMapping();
@@ -133,7 +133,7 @@ insertProductController = async (req, res) => {
   }
 };
 
-deleteProductController = async (req, res) => {
+const deleteProductController = async (req, res) => {
   try {
     const productId = req.params.id;
 
