@@ -76,39 +76,39 @@ export default function Home() {
         </select>
       </div> */}
 
-      <div class='insight'>
-        <div class='balance' id='balance'>
+      <div className='insight'>
+        <div className='balance' id='balance'>
           <div className='bg-[var(--color-primary)] inline-flex items-center justify-center p-2 rounded-full'>
             <Package size={28} className='text-white' />
           </div>
-          <div class='info' id='info-balance'>
+          <div className='info' id='info-balance'>
             <h3>Total Products</h3>
             <h1>84</h1>
           </div>
         </div>
-        <div class='income' id='income'>
+        <div className='income' id='income'>
           <div className='bg-[var(--color-success)] inline-flex items-center justify-center p-2 rounded-full'>
             <DollarSign size={28} className='text-white' />
           </div>
-          <div class='info' id='info-income'>
+          <div className='info' id='info-income'>
             <h3>Total Value</h3>
             <h1>Rp.10.000</h1>
           </div>
         </div>
-        <div class='expenses' id='expenses'>
+        <div className='expenses' id='expenses'>
           <div className='bg-[var(--color-danger)] inline-flex items-center justify-center p-2 rounded-full'>
             <PackageX size={28} className='text-white' />
           </div>
-          <div class='info' id='info-expenses'>
+          <div className='info' id='info-expenses'>
             <h3>Out of Stock</h3>
             <h1>2</h1>
           </div>
         </div>
-        <div class='expenses' id='expenses'>
+        <div className='expenses' id='expenses'>
           <div className='bg-[var(--color-warning)] inline-flex items-center justify-center p-2 rounded-full'>
             <Folder size={28} className='text-white' />
           </div>
-          <div class='info' id='info-expenses'>
+          <div className='info' id='info-expenses'>
             <h3>All Categories</h3>
             <h1>5</h1>
           </div>

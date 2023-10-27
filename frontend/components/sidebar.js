@@ -50,18 +50,20 @@ const Sidebar = () => {
 
       <div className='sidebar'>
         {items.map((item) => (
-          <Link
-            href={item.href}
-            className={`btn ${pathname === item.href && 'active'}`}>
-            {item.icon}
-            <h3>{item.label}</h3>
+          <Link key={item.href} href={item.href} legacyBehavior>
+            <a className={`btn ${pathname === item.href ? 'active' : ''}`}>
+              {item.icon}
+              <h3>{item.label}</h3>
+            </a>
           </Link>
         ))}
 
         <div className='sidebar-bottom'>
-          <Link href='/profile' className='btn'>
-            <User2 size={20} />
-            <h3>Profile</h3>
+          <Link href='/profile' legacyBehavior>
+            <a className='btn'>
+              <User2 size={20} />
+              <h3>Profile</h3>
+            </a>
           </Link>
           <a href='#' className='btn'>
             <LogOut size={20} />
@@ -74,3 +76,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
