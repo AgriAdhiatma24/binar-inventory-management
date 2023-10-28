@@ -10,7 +10,11 @@ if (process.env.NODE_ENV === "production") {
 const productCategoryRouter = express();
 productCategoryRouter.get("/", productCategoryController.getCategories);
 productCategoryRouter.get(
-  "/categoryCount",
+  "/:id",
+  productCategoryController.getOneProductCategory
+);
+productCategoryRouter.get(
+  "/category/count",
   productCategoryController.getTotalProductCategoryCount
 );
 productCategoryRouter.post("/", productCategoryController.createNewCategory);
