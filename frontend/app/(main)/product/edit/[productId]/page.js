@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import withAuth from '@/utils/auth';
 
 const EditProductPage = () => {
   const router = useRouter();
