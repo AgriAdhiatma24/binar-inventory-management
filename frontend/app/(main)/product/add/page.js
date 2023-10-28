@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import withAuth from '@/utils/auth';
 
 const AddProductPage = () => {
   const router = useRouter();
@@ -126,4 +127,4 @@ const AddProductPage = () => {
   );
 };
 
-export default AddProductPage;
+export default withAuth(AddProductPage);
