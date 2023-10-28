@@ -1,34 +1,29 @@
 "use client";
 
 import axios from "axios";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import withAuth from "@/utils/auth";
 
-const AddProductPage = () => {
+const EditProductCategory = () => {
   const router = useRouter();
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
   const params = useParams();
-  const { id } = params;
+  const { productCategoryId } = params;
+  console.log(productCategoryId);
 
-  //   useEffect(() => {
-  //     const getProductData = async () => {
-  //       const response = await axios.get(
-  //         `http://localhost:9000/api/v1/product-category/${id}`
-  //       );
-  //       const { name, price, stock_amount, image_url, category_id } =
-  //         response.data.data;
+  useEffect(() => {
+    const getProductData = async () => {
+      const response = await axios.get(
+        `http://localhost:9000/api/v1/product-category/${productCategoryId}`
+      );
+      const { name } = response.data.data;
 
-  //       setName(name);
-  //       setPrice(price);
-  //       setStock(stock_amount);
-  //       setImage(image_url);
-  //       setCategory(category_id);
-  //     };
-  //     getProductData();
-  //   }, [productId]);
+      setName(name);
+    };
+    getProductData();
+  }, [productCategoryId]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -36,8 +31,8 @@ const AddProductPage = () => {
       name,
     };
     console.log(data);
-    await axios.post(
-      "http://localhost:9000/api/v1/product-category/add",
+    await axios.put(
+      `http://localhost:9000/api/v1/product-category/${productCategoryId}`,
       data,
       {
         headers: {
@@ -45,7 +40,7 @@ const AddProductPage = () => {
         },
       }
     );
-    toast.success("Product added.");
+    toast.success("Product updated.");
     router.push("/categories");
   };
 
@@ -75,4 +70,4 @@ const AddProductPage = () => {
   );
 };
 
-export default withAuth(AddProductPage);
+export default withAuth(EditProductCategory);
