@@ -67,9 +67,26 @@ const updateCategory = async (req, res) => {
   }
 };
 
+const getTotalProductCategoryCount = async (_req, res) => {
+  try {
+    const totalProductCategory =
+      await productCategoryModel.getProductCategoryCount();
+
+    return res
+      .status(200)
+      .json(
+        okResp("Sucessfully get product category count", totalProductCategory)
+      );
+  } catch (e) {
+    console.error("Error get product count: ", e);
+    return res.status(e.code || 500).json(errorResp(e.message));
+  }
+};
+
 module.exports = {
   getCategories,
   createNewCategory,
   deleteCategory,
   updateCategory,
+  getTotalProductCategoryCount,
 };
