@@ -70,4 +70,22 @@ const editCategory = async (categoryId, updatedData) => {
   }
 };
 
-module.exports = { loadCategories, addCategory, deleteCategory, editCategory };
+const getProductCategoryCount = async () => {
+  try {
+    const productCategoryCount = await db("product_category")
+      .count("id as totalCount")
+      .first();
+
+    return productCategoryCount.totalCount;
+  } catch (e) {
+    throw new ErrorServer(e.message);
+  }
+};
+
+module.exports = {
+  loadCategories,
+  addCategory,
+  deleteCategory,
+  editCategory,
+  getProductCategoryCount,
+};

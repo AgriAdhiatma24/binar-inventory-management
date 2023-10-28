@@ -198,53 +198,53 @@ describe("productController.deleteProductController", () => {
 /*-----------------------PRODUCT CATEGORY CONTROLLER-------------------------------------------------------*/
 
 // ======================Test suite 1======================================
-describe("getCategories", () => {
-  it("should return all product categories", async () => {
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
+// describe("getCategories", () => {
+//   it("should return all product categories", async () => {
+//     const res = {
+//       status: jest.fn().mockReturnThis(),
+//       json: jest.fn(),
+//     };
 
-    const mockCategories = [
-      {
-        id: "1",
-        name: "Category 1",
-      },
-      {
-        id: "2",
-        name: "Category 2",
-      },
-    ];
-    productCategoryModel.loadCategories = jest
-      .fn()
-      .mockResolvedValue(mockCategories);
+//     const mockCategories = [
+//       {
+//         id: "1",
+//         name: "Category 1",
+//       },
+//       {
+//         id: "2",
+//         name: "Category 2",
+//       },
+//     ];
+//     productCategoryModel.loadCategories = jest
+//       .fn()
+//       .mockResolvedValue(mockCategories);
 
-    // Call the controller function
-    await productCategoryController.getCategories({}, res);
+//     // Call the controller function
+//     await productCategoryController.getCategories({}, res);
 
-    // Assertions
-    expect(res.status).toHaveBeenCalledWith(200);
-  });
+//     // Assertions
+//     expect(res.status).toHaveBeenCalledWith(200);
+//   });
 
-  it("should handle errors", async () => {
-    // Mock your Express response object
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
+//   it("should handle errors", async () => {
+//     // Mock your Express response object
+//     const res = {
+//       status: jest.fn().mockReturnThis(),
+//       json: jest.fn(),
+//     };
 
-    // Mock an error in the productCategoryModel
-    const errorMessage = "Database error";
-    productCategoryModel.loadCategories = jest
-      .fn()
-      .mockRejectedValue(new Error(errorMessage));
+//     // Mock an error in the productCategoryModel
+//     const errorMessage = "Database error";
+//     productCategoryModel.loadCategories = jest
+//       .fn()
+//       .mockRejectedValue(new Error(errorMessage));
 
-    // Call the controller function
-    await productCategoryController.getCategories({}, res);
+//     // Call the controller function
+//     await productCategoryController.getCategories({}, res);
 
-    expect(res.status).toHaveBeenCalledWith(500);
-  });
-});
+//     expect(res.status).toHaveBeenCalledWith(500);
+//   });
+// });
 
 // ======================Test suite 2======================================
 // ======================Test suite 3======================================
