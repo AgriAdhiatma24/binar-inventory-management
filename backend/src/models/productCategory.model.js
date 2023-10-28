@@ -13,6 +13,18 @@ const loadCategories = async () => {
   }
 };
 
+const getSingleProductCategory = async (id) => {
+  try {
+    return await db
+      .select("*")
+      .from("product_category")
+      .where("id", id)
+      .first();
+  } catch (e) {
+    throw new ErrorServer(e.message);
+  }
+};
+
 const addCategory = async (newCategory) => {
   try {
     const existingCategory = await db("product_category")
@@ -84,6 +96,7 @@ const getProductCategoryCount = async () => {
 
 module.exports = {
   loadCategories,
+  getSingleProductCategory,
   addCategory,
   deleteCategory,
   editCategory,

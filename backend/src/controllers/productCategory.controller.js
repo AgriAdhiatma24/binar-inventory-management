@@ -16,6 +16,23 @@ const getCategories = async (_req, res) => {
   }
 };
 
+const getOneProductCategory = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const productCategory = await productCategoryModel.getSingleProductCategory(
+      id
+    );
+    return res
+      .status(200)
+      .json(
+        okResp("Sucessfully fetching one product category", productCategory)
+      );
+  } catch (e) {
+    console.error("Error fetching product: ", e);
+    return res.status(e.code || 500).json(errorResp(e.message));
+  }
+};
+
 const createNewCategory = async (req, res) => {
   try {
     const newCategory = req.body;
@@ -85,6 +102,7 @@ const getTotalProductCategoryCount = async (_req, res) => {
 
 module.exports = {
   getCategories,
+  getOneProductCategory,
   createNewCategory,
   deleteCategory,
   updateCategory,
