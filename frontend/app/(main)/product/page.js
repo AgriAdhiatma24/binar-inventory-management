@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Edit, Plus, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import withAuth from '@/utils/auth';
 
 const InventoryPage = () => {
   const [items, setItems] = useState([]);
@@ -75,4 +76,4 @@ const InventoryPage = () => {
   );
 };
 
-export default InventoryPage;
+export default withAuth(InventoryPage);

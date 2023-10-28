@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import logout from '../utils/logout.js';
 
 const items = [
   {
@@ -37,6 +38,14 @@ const items = [
 const Sidebar = () => {
   const pathname = usePathname();
 
+  const handleLogout = () => {
+    const confirmed = window.confirm('Are you sure you want to log out?');
+
+    if (confirmed) {
+      logout(); 
+    }
+  };
+
   return (
     <aside className='w-64'>
       <div className='top'>
@@ -50,20 +59,22 @@ const Sidebar = () => {
 
       <div className='sidebar'>
         {items.map((item) => (
-          <Link
-            href={item.href}
-            className={`btn ${pathname === item.href && 'active'}`}>
-            {item.icon}
-            <h3>{item.label}</h3>
+          <Link key={item.href} href={item.href} legacyBehavior>
+            <a className={`btn ${pathname === item.href ? 'active' : ''}`}>
+              {item.icon}
+              <h3>{item.label}</h3>
+            </a>
           </Link>
         ))}
 
         <div className='sidebar-bottom'>
-          <Link href='/profile' className='btn'>
-            <User2 size={20} />
-            <h3>Profile</h3>
+          <Link href='/profile' legacyBehavior>
+            <a className={`btn ${pathname === '/profile' ? 'active' : ''}`}>
+              <User2 size={20} />
+              <h3>Profile</h3>
+            </a>
           </Link>
-          <a href='#' className='btn'>
+          <a className='btn' onClick={handleLogout}>
             <LogOut size={20} />
             <h3>Logout</h3>
           </a>
@@ -74,3 +85,5 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+

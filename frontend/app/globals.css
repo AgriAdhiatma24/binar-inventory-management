@@ -346,7 +346,7 @@
   .navbar .top {
     display: flex;
     gap: 2rem;
-    justify-content: end;
+    justify-content: flex-end;
   }
 
   .navbar .top .theme-toggler {
