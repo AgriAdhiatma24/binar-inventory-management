@@ -1,5 +1,6 @@
 const { productCategoryModel } = require("../models");
 const { errorResp, okResp } = require("../utils/responseHandlers");
+const uuid = require("uuid");
 
 const getCategories = async (_req, res) => {
   try {
@@ -35,13 +36,18 @@ const getOneProductCategory = async (req, res) => {
 
 const createNewCategory = async (req, res) => {
   try {
-    const newCategory = req.body;
+    const name = req.body.name;
 
-    if (!newCategory.name) {
+    const newData = {
+      id: uuid.v4(),
+      name,
+    };
+
+    if (!name) {
       return res.status(401).json(errorResp("name is required"));
     }
 
-    const addedCategory = await productCategoryModel.addCategory(newCategory);
+    const addedCategory = await productCategoryModel.addCategory(newData);
     return res
       .status(200)
       .json(okResp("Successfully create product category", addedCategory));

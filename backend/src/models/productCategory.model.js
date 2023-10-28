@@ -28,14 +28,14 @@ const getSingleProductCategory = async (id) => {
 const addCategory = async (newCategory) => {
   try {
     const existingCategory = await db("product_category")
-      .where("name", newCategory.name)
+      .where("name", newCategory)
       .first();
 
     if (existingCategory) {
       throw new ErrorUserInput("Category with this name already exists");
     }
 
-    const [addedCategory] = await db("product_category")
+    const addedCategory = await db("product_category")
       .insert(newCategory)
       .returning("*");
 
