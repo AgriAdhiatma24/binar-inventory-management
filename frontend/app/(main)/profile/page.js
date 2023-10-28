@@ -5,61 +5,74 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import withAuth from '@/utils/auth';
+import jwt from 'jsonwebtoken'
 
 const ProfileUpdatePage = () => {
   const router = useRouter();
-
-  const fixedUserId = 'd4991e9e-e681-4007-b27f-518fa0524ce8'
-
-  const [user_id, setUserId] = useState(fixedUserId); 
   const [full_name, setFullName] = useState(null);
   const [date_of_birth, setDateOfBirth] = useState(null);
   const [address, setAddress] = useState(null);
 
-  
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
+        const access_token = localStorage.getItem('access_token');
+
+        if (access_token) {
+          const decoded = jwt.decode(access_token);
         
-        const response = await axios.get(`http://localhost:9000/api/v1/user-profile/${user_id}`);
-        const userData = response.data;
-        console.log(userData);
-        
-        setFullName(userData.data.full_name);
-        setDateOfBirth(userData.data.date_of_birth);
-        setAddress(userData.data.address);
+          if (decoded && decoded.user.user_id) {
+            const user_id = decoded.user.user_id;
+            
+            
+            axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+
+            const response = await axios.get(`http://localhost:9000/api/v1/user-profile/${user_id}`);
+            const userData = response.data;
+
+            setFullName(userData.data.full_name);
+            setDateOfBirth(userData.data.date_of_birth);
+            setAddress(userData.data.address);
+          }
+        }
       } catch (error) {
         
       }
     };
 
-    
-
-    setUserId(fixedUserId);
     fetchUserProfile();
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     const data = {
-      user_id, 
       fullName: full_name,
       dateOfBirth: date_of_birth,
       address,
     };
 
     try {
-     
-      await axios.put(`http://localhost:9000/api/v1/user-profile/${user_id}`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const access_token = localStorage.getItem('access_token');
+      if (access_token) {
+        const decoded = jwt.decode(access_token);
+        
+        if (decoded && decoded.user.user_id) {
+          const user_id = decoded.user.user_id;
+      
+          axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
 
-      toast.success('Profile updated.');
-      router.push('/profile/edit');
+          await axios.put(`http://localhost:9000/api/v1/user-profile/${user_id}`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        toast.success('Profile updated.');
+        router.push('/profile');
+        }
+      }
     } catch (error) {
-      // Handle errors, e.g., display an error message to the user
+      toast.error('An error occurred while updating your profile.');
+      console.error('Error:', error);
     }
   };
 
