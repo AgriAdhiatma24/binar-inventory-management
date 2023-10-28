@@ -38,6 +38,14 @@ const items = [
 const Sidebar = () => {
   const pathname = usePathname();
 
+  const handleLogout = () => {
+    const confirmed = window.confirm('Are you sure you want to log out?');
+
+    if (confirmed) {
+      logout(); 
+    }
+  };
+
   return (
     <aside className='w-64'>
       <div className='top'>
@@ -61,12 +69,12 @@ const Sidebar = () => {
 
         <div className='sidebar-bottom'>
           <Link href='/profile' legacyBehavior>
-            <a className='btn'>
+            <a className={`btn ${pathname === '/profile' ? 'active' : ''}`}>
               <User2 size={20} />
               <h3>Profile</h3>
             </a>
           </Link>
-          <a className='btn' onClick={logout}>
+          <a className='btn' onClick={handleLogout}>
             <LogOut size={20} />
             <h3>Logout</h3>
           </a>
@@ -77,4 +85,5 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
 
