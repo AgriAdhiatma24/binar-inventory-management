@@ -1,6 +1,7 @@
 "use client";
 
 import axios from "axios";
+import Modal from "@/components/modal";
 import { Edit, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -9,7 +10,44 @@ import withAuth from "../../../utils/auth.js";
 
 const CategoriesPage = () => {
   const [items, setItems] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const onClickDelete = (id) => {
+    setDeleteId(id);
+    setShowModal(true);
+  };
+
+  const onClose = () => {
+    setShowModal(false);
+    setDeleteId(null);
+  };
+
+  const getItemsData = async () => {
+    const response = await axios.get(
+      "http://localhost:9000/api/v1/product-category/"
+    );
+    const { data } = response.data;
+    setItems(data);
+  };
+
+  useEffect(() => {
+    getItemsData();
+  }, []);
+
+  const onConfirmDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:9000/api/v1/product-category/${deleteId}`
+      );
+      getItemsData();
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong!");
+    } finally {
+      onClose();
+    }
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -68,7 +106,10 @@ const CategoriesPage = () => {
                       <Edit size={12} />
                       Edit
                     </Link>
-                    <button className="bg-red-500 hover:bg-red-400 text-white py-0.5 px-2 text-sm inline-flex items-center gap-x-1 rounded">
+                    <button
+                      onClick={() => onClickDelete(item.id)}
+                      className="bg-red-500 hover:bg-red-400 text-white py-0.5 px-2 text-sm inline-flex items-center gap-x-1 rounded"
+                    >
                       <Trash size={12} />
                       Delete
                     </button>
@@ -79,6 +120,7 @@ const CategoriesPage = () => {
           </tbody>
         </table>
       </div>
+      <Modal isOpen={showModal} onClose={onClose} onConfirm={onConfirmDelete} />
     </div>
   );
 };
