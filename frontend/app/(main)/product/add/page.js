@@ -24,7 +24,7 @@ const AddProductPage = () => {
       );
       const { data } = response.data;
       setCategories(data);
-      setCategory(data[0].id);
+      setCategory(data[0].name);
     };
 
     fetchCategories();
@@ -36,10 +36,9 @@ const AddProductPage = () => {
       name,
       price,
       stock_amount: stock,
-      image_url: "image.jpg",
-      category_id: category,
+      image_url: image,
+      category_name: category,
     };
-    console.log(data);
     await axios.post("http://localhost:9000/api/v1/product/add", data, {
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +113,7 @@ const AddProductPage = () => {
             onChange={(e) => setCategory(e.target.value)}
           >
             {categories.map((category) => (
-              <option value={category.id}>{category.name}</option>
+              <option value={category.name}>{category.name}</option>
             ))}
           </select>
         </div>
