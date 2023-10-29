@@ -26,6 +26,13 @@ function Home() {
   const [outOfStockItem, setOutOfStockItem] = useState("");
   const [categoryCount, setCategoryCount] = useState("");
 
+  const formatter = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
   const getItemsData = async () => {
     const response = await axios.get(
       "http://localhost:9000/api/v1/product/products"
@@ -118,7 +125,7 @@ function Home() {
           </div>
           <div className="info" id="info-income">
             <h3>Total Value</h3>
-            <h1>Rp.{totalStoreValue}</h1>
+            <h1>{formatter.format(totalStoreValue)}</h1>
           </div>
         </div>
         <div className="expenses" id="expenses">
@@ -155,24 +162,22 @@ function Home() {
         <div className="w-full bg-white rounded-3xl p-8">
           <table className="w-full">
             <thead>
-              <tr className="h-12 text-left">
+              <tr className="h-12 text-center">
                 <th>No</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Stock Amount</th>
-                <th>Image</th>
                 <th>Category</th>
                 <th className="w-30">Action</th>
               </tr>
             </thead>
-            <tbody id="table-body">
+            <tbody id="table-body" className="text-center">
               {items.map((item, index) => (
                 <tr>
                   <td>{index + 1}</td>
                   <td>{item.name}</td>
-                  <td>{item.price}</td>
+                  <td>{formatter.format(item.price)}</td>
                   <td>{item.stock_amount}</td>
-                  <td>{item.image_url}</td>
                   <td>{item.category_id}</td>
                   <td>
                     <Link
