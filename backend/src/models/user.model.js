@@ -1,11 +1,14 @@
 const db = require("../db/db.config");
 const { ErrorServer, ErrorNotFound } = require("../utils/errorHandlers");
 const bcrypt = require("bcrypt");
+const uuid = require("uuid");
 
 const createUser = async (username, password) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   try {
+    const id = uuid.v4();
     return await db("user").returning("id").insert({
+      id,
       username,
       hash_password: hashedPassword,
     });
