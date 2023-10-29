@@ -4,11 +4,12 @@
  */
 exports.up = function (knex) {
   return knex.schema.createTable("user_profile", (table) => {
-    table.uuid("id").primary();
+    table.uuid("id").primary().defaultTo(knex.raw("gen_random_uuid()"));
     table.uuid("user_id").references("id").inTable("user").onDelete("CASCADE");
     table.string("full_name");
     table.string("date_of_birth");
     table.string("address");
+    table.string("email").notNullable()
   });
 };
 

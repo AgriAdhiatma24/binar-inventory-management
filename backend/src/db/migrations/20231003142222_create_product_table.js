@@ -4,7 +4,7 @@
  */
 exports.up = function (knex) {
   return knex.schema.createTable("product", (table) => {
-    table.uuid("id").primary();
+    table.uuid("id").primary().defaultTo(knex.raw("gen_random_uuid()"));
     table.string("name").notNullable();
     table.decimal("price").notNullable();
     table.integer("stock_amount").notNullable();
