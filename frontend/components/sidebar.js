@@ -47,7 +47,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64">
+    <aside className="w-fit">
       <div className="top">
         <div className="logo">
           <div className="text-2xl font-bold">Binar Inventory</div>
