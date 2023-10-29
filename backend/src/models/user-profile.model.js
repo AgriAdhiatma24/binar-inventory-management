@@ -9,25 +9,27 @@ const getUserProfileByUserId = async (userId) => {
   }
 };
 
-const createUserProfile = async (userId, fullName, dateOfBirth, address) => {
+const createUserProfile = async (userId, fullName, dateOfBirth, address, email) => {
   try {
     return db("user_profile").insert({
       user_id: userId,
       full_name: fullName,
       date_of_birth: dateOfBirth,
       address,
+      email,
     });
   } catch (e) {
     throw new ErrorServer(e.detail);
   }
 };
 
-const updateUserProfile = async (userId, fullName, dateOfBirth, address) => {
+const updateUserProfile = async (userId, fullName, dateOfBirth, address, email) => {
   try {
     return db("user_profile").where("user_id", userId).update({
       full_name: fullName,
       date_of_birth: dateOfBirth,
       address,
+      email,
     });
   } catch (e) {
     throw new ErrorServer(e.detail);

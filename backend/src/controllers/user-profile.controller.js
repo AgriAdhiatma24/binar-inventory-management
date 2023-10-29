@@ -19,10 +19,10 @@ const getUserProfile = async (req, res) => {
 
 const updateUserProfile = async (req, res) => {
   const userId = req.params.userId;
-  const { fullName, dateOfBirth, address } = req.body;
+  const { fullName, dateOfBirth, address, email } = req.body;
 
   try {
-    await userProfile.updateUserProfile(userId, fullName, dateOfBirth, address);
+    await userProfile.updateUserProfile(userId, fullName, dateOfBirth, address, email);
     return res.status(200).json(okResp("User Profile Updated Successfuly"));
   } catch (e) {
     console.error("Error updating user profile: ", e);
