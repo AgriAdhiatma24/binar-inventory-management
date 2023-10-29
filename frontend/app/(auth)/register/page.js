@@ -3,32 +3,40 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Link from "next/link";
 
 export default function Register() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [fullname, setFullname] = useState("");
+  const [fullName, setFullname] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
-  const [address, setAddress] = useState({});
+  const [address, setAddress] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-      username,
-      password,
-      fullname,
-      dateOfBirth,
-      address,
-    };
+    setFormSubmitted(true);
+    if (!username || !password || !fullName || !dateOfBirth || !address) {
+      toast.error("Please fill in all fields.");
+      return;
+    } else {
+      const data = {
+        username,
+        password,
+        fullName,
+        dateOfBirth,
+        address,
+      };
 
-    await axios.post("http://localhost:9000/api/v1/auth/register", data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    toast.success("User Registered!.");
-    router.push("/login");
+      await axios.post("http://localhost:9000/api/v1/auth/register", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      toast.success("User Registered!.");
+      router.push("/login");
+    }
   };
 
   return (
@@ -53,7 +61,9 @@ export default function Register() {
               placeholder="Enter username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
+                formSubmitted && !username && "border-red-500"
+              }`}
             />
           </div>
           <div className="mb-2">
@@ -68,7 +78,9 @@ export default function Register() {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
+                formSubmitted && !password && "border-red-500"
+              }`}
             />
           </div>
           <div className="mb-2">
@@ -81,9 +93,11 @@ export default function Register() {
             <input
               type="text"
               placeholder="Enter fullname"
-              value={fullname}
+              value={fullName}
               onChange={(e) => setFullname(e.target.value)}
-              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
+                formSubmitted && !fullName && "border-red-500"
+              }`}
             />
           </div>
           <div className="mb-4">
@@ -97,7 +111,9 @@ export default function Register() {
               type="date"
               value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
-              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
+                formSubmitted && !dateOfBirth && "border-red-500"
+              }`}
             />
           </div>
           <div className="mb-2">
@@ -112,7 +128,9 @@ export default function Register() {
               placeholder="Enter address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
+                formSubmitted && !address && "border-red-500"
+              }`}
             />
           </div>
           <div className="mt-2">
@@ -122,6 +140,11 @@ export default function Register() {
             >
               Register
             </button>
+          </div>
+          <div className="mt-2">
+            <Link className="flex items-center justify-center" href={"/login"}>
+              Go to Login Page
+            </Link>
           </div>
         </form>
       </div>
