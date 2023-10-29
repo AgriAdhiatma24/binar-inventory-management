@@ -54,7 +54,6 @@ function Home() {
       "http://localhost:9000/api/v1/product/products/store-values"
     );
     const data = response.data.data;
-    console.log(data);
     setTotalStoreValue(data);
   };
 
@@ -71,7 +70,6 @@ function Home() {
       "http://localhost:9000/api/v1/product-category/category/count"
     );
     const data = response.data.data;
-    console.log(data);
     setCategoryCount(data);
   };
 
@@ -143,7 +141,7 @@ function Home() {
           </div>
           <div className="info" id="info-expenses">
             <h3>All Categories</h3>
-            <h1>5</h1>
+            <h1>{categoryCount}</h1>
           </div>
         </div>
       </div>
@@ -173,7 +171,7 @@ function Home() {
             </thead>
             <tbody id="table-body" className="text-center">
               {items.map((item, index) => (
-                <tr>
+                <tr key={item.id}>
                   <td>{index + 1}</td>
                   <td>{item.name}</td>
                   <td>{formatter.format(item.price)}</td>
