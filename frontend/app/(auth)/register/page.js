@@ -16,6 +16,7 @@ export default function Register() {
     fullName: '',
     dateOfBirth: '',
     address: '',
+    email: '',
   });
 
   const handleInputChange = (e) => {
@@ -40,6 +41,10 @@ export default function Register() {
   const fetchRegister = async (e) => {
     e.preventDefault();
     const newErrors = {};
+
+    if (formData.email.trim() === '') {
+      newErrors.email = 'Email is required';
+    }
 
     if (formData.username.trim() === '') {
       newErrors.username = 'Username is required';
@@ -78,13 +83,7 @@ export default function Register() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            username: formData.username,
-            password: formData.password,
-            fullName: formData.fullName,
-            dateOfBirth: formData.dateOfBirth,
-            address: formData.address,
-          }),
+          body: JSON.stringify(formData),
         });
 
         if (response.ok) {
@@ -110,6 +109,24 @@ export default function Register() {
         {notification && <div className='text-red-500 mb-4'>{notification}</div>}
 
         <form onSubmit={fetchRegister} className='mt-6'>
+          <div className='mb-4'>
+            <label htmlFor='email' className='block text-sm font-semibold text-gray-800'>
+              Email
+            </label>
+            <input
+              id='email'
+              name='email'
+              type='email' 
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder='Enter Email'
+              className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40  ${
+                errors.email ? 'border-red-500' : ''
+              }`}
+            />
+            {errors.email && <p className='text-red-500 text-xs'>{errors.email}</p>}
+          </div>
+
           <div className='mb-4'>
             <label htmlFor='username' className='block text-sm font-semibold text-gray-800'>
               Username
@@ -196,7 +213,7 @@ export default function Register() {
             <input
               id='dateOfBirth'
               name='dateOfBirth'
-              type='date' // Change the input type to 'date'
+              type='date' 
               value={formData.dateOfBirth}
               onChange={handleInputChange}
               placeholder='Select Date of Birth'

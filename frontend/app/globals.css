@@ -440,6 +440,7 @@
   .form-style input[type='date'],
   .form-style input[type='datetime'],
   .form-style input[type='number'],
+  .form-style input[type='email'],
   textarea,
   select {
     background: var(--color-white);

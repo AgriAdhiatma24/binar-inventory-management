@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 
 const ProfileUpdatePage = () => {
   const router = useRouter();
+  const [email, setEmail] = useState(null);
   const [full_name, setFullName] = useState(null);
   const [date_of_birth, setDateOfBirth] = useState(null);
   const [address, setAddress] = useState(null);
@@ -33,6 +34,7 @@ const ProfileUpdatePage = () => {
             );
             const userData = response.data;
 
+            setEmail(userData.data.email); 
             setFullName(userData.data.full_name);
             setDateOfBirth(userData.data.date_of_birth);
             setAddress(userData.data.address);
@@ -47,6 +49,7 @@ const ProfileUpdatePage = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const data = {
+      email, 
       fullName: full_name,
       dateOfBirth: date_of_birth,
       address,
@@ -83,13 +86,26 @@ const ProfileUpdatePage = () => {
     }
   };
 
-  if (full_name === null || date_of_birth === null || address === null) {
+  if (email === null || full_name === null || date_of_birth === null || address === null) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="w-full max-w-2xl">
       <form onSubmit={onSubmit} className="form-style space-y-4">
+        <div>
+          <label htmlFor="email" className="font-bold">
+            Email <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            className="w-full bg-white border border-collapse border-solid"
+            value={email || ""}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
         <div>
           <label htmlFor="full_name" className="font-bold">
             Full Name <span className="text-red-500">*</span>
@@ -140,3 +156,4 @@ const ProfileUpdatePage = () => {
 };
 
 export default withAuth(ProfileUpdatePage);
+
