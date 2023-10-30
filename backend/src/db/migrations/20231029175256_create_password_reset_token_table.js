@@ -4,7 +4,7 @@
  */
 exports.up = function(knex) {
     return knex.schema.createTable("password_reset_token", (table) => {
-        table.uuid("id").primary().defaultTo(knex.raw("gen_random_uuid()"));
+        table.uuid("id").primary();
         table.uuid("user_id").references("id").inTable("user").onDelete("CASCADE");
         table.string("token").notNullable();
         table.timestamp("expiration").notNullable();
