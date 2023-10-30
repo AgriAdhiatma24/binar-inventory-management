@@ -9,6 +9,7 @@ exports.up = function (knex) {
     table.string("full_name");
     table.string("date_of_birth");
     table.string("address");
+    table.string("email").notNullable()
   });
 };
 

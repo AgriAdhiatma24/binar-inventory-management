@@ -7,6 +7,7 @@ import Link from "next/link";
 
 export default function Register() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullname] = useState("");
@@ -17,11 +18,12 @@ export default function Register() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setFormSubmitted(true);
-    if (!username || !password || !fullName || !dateOfBirth || !address) {
+    if (!email || !username || !password || !fullName || !dateOfBirth || !address) {
       toast.error("Please fill in all fields.");
       return;
     } else {
       const data = {
+        email,
         username,
         password,
         fullName,
@@ -49,6 +51,23 @@ export default function Register() {
           Register Form
         </h2>
         <form className="mt-6" onSubmit={onSubmit}>
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-semibold text-gray-800"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={`block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
+                formSubmitted && !email && "border-red-500"
+              }`}
+            />
+          </div>
           <div className="mb-4">
             <label
               htmlFor="username"

@@ -10,7 +10,7 @@ const getUserProfileByUserId = async (userId) => {
   }
 };
 
-const createUserProfile = async (userId, fullName, dateOfBirth, address) => {
+const createUserProfile = async (userId, fullName, dateOfBirth, address, email) => {
   try {
     const id = uuid.v4();
     return db("user_profile").insert({
@@ -19,18 +19,20 @@ const createUserProfile = async (userId, fullName, dateOfBirth, address) => {
       full_name: fullName,
       date_of_birth: dateOfBirth,
       address,
+      email,
     });
   } catch (e) {
     throw new ErrorServer(e.detail);
   }
 };
 
-const updateUserProfile = async (userId, fullName, dateOfBirth, address) => {
+const updateUserProfile = async (userId, fullName, dateOfBirth, address, email) => {
   try {
     return db("user_profile").where("user_id", userId).update({
       full_name: fullName,
       date_of_birth: dateOfBirth,
       address,
+      email,
     });
   } catch (e) {
     throw new ErrorServer(e.detail);
@@ -45,9 +47,18 @@ const deleteUserProfile = async (userId) => {
   }
 };
 
+const getUserProfileByEmail = async (email) => {
+  try {
+    return db("user_profile").where("email", email).first()
+  } catch (e) {
+    throw new ErrorServer(e.detail);
+  }
+}
+
 module.exports = {
   getUserProfileByUserId,
   createUserProfile,
   updateUserProfile,
   deleteUserProfile,
+  getUserProfileByEmail
 };

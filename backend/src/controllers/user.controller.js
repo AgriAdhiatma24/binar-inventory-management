@@ -4,14 +4,15 @@ const bycrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
-  const { username, password, fullName, dateOfBirth, address } = req.body;
+  const { username, password, fullName, dateOfBirth, address, email } = req.body;
   try {
     //Destructuring user_id to get first element of createUser, which is ID
     const [user_id] = await user.createUser(username, password);
     const userId = user_id.id;
-    await userProfile.createUserProfile(userId, fullName, dateOfBirth, address);
+    await userProfile.createUserProfile(userId, fullName, dateOfBirth, address, email);
     return res.status(201).json(
       okResp("User Registered Sucessfully", {
+        email,
         username,
         fullName,
         dateOfBirth,
@@ -111,6 +112,7 @@ const deleteUserAndProfile = async (req, res) => {
     return res.status(e.code || 500).json(errorResp(e.message));
   }
 };
+
 
 module.exports = {
   registerUser,

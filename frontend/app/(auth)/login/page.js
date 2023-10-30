@@ -23,6 +23,10 @@ export default function Login() {
     window.location.href = "/register";
   };
 
+const routeToForgotPassword = () => {
+  window.location.href = "/forgot-password"
+}
+
   const togglePasswordVisibility = () => {
     if (type === "password") {
       setIcon(eye);
@@ -156,7 +160,7 @@ export default function Login() {
             </h2>
 
             <span
-              onClick={routeToRegister}
+              onClick={routeToForgotPassword}
               className="cursor-pointer ml-1 font-bold"
             >
               Forgot Password?
