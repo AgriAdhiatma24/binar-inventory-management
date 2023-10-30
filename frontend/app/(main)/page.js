@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import withAuth from "@/utils/auth";
+import { useRouter } from "next/navigation";
 
 function Home() {
   const [items, setItems] = useState([]);
@@ -25,6 +26,7 @@ function Home() {
   const [totalStoreValue, setTotalStoreValue] = useState("");
   const [outOfStockItem, setOutOfStockItem] = useState("");
   const [categoryCount, setCategoryCount] = useState("");
+  const router = useRouter();
 
   const formatter = new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -32,6 +34,14 @@ function Home() {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
+
+  useEffect(() => {
+    const access_token = localStorage.getItem("access_token");
+
+    if (!access_token) {
+      router.push("/login"); // Redirect to the login page if there's no access token
+    }
+  }, []);
 
   const getItemsData = async () => {
     const response = await axios.get(
