@@ -15,7 +15,6 @@ export default function ForgotPassword() {
     setEmail(e.target.value);
   };
 
-
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     setFormSubmitted(true);
@@ -26,31 +25,33 @@ export default function ForgotPassword() {
     }
 
     try {
-        const response = await axios.post(
-          "http://localhost:9000/api/v1/reset-password/forgot-password",
-          { email },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-    
-        if (response.status === 200) {
-          console.log(response.data.data)
-          if (response.data && response.data.data.user_id) {
-            router.push(`/reset-password?id=${response.data.data.user_id}`);
-          } else {
-            setNotification("User ID not found in the response. Please try again.");
-          }
-        } else {
-          setNotification("Failed to process your request. Please try again.");
+      const response = await axios.post(
+        "http://localhost:9000/api/v1/reset-password/forgot-password",
+        { email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      } catch (error) {
-        console.error("Failed to request reset password.", error);
-        setNotification("An error occurred. Please try again.");
+      );
+
+      if (response.status === 200) {
+        console.log(response.data.data);
+        if (response.data && response.data.data.user_id) {
+          router.push(`/reset-password?id=${response.data.data.user_id}`);
+        } else {
+          setNotification(
+            "User ID not found in the response. Please try again."
+          );
+        }
+      } else {
+        setNotification("Failed to process your request. Please try again.");
       }
-    };
+    } catch (error) {
+      console.error("Failed to request reset password.", error);
+      setNotification("An error occurred. Please try again.");
+    }
+  };
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
@@ -71,7 +72,7 @@ export default function ForgotPassword() {
               htmlFor="email"
               className="block text-sm font-semibold text-gray-800"
             >
-              Email
+              Registered Email
             </label>
             <input
               type="email"
@@ -94,6 +95,11 @@ export default function ForgotPassword() {
             >
               Submit
             </button>
+          </div>
+          <div className="mt-2">
+            <Link className="flex items-center justify-center" href={"/login"}>
+              Go to Login Page
+            </Link>
           </div>
         </form>
       </div>
