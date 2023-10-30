@@ -50,7 +50,7 @@ const forgotPassword = async (req, res) => {
 const resetUserPassword = async (req, res) => {
     const token = req.body.token;
     const userId = req.params.userId;
-    const newPassword = req.body.password;
+    const newPassword = req.body.newPassword;
   
     try {
       const tokenVerification = await resetPassword.getTokenByUserId(userId);
@@ -61,8 +61,7 @@ const resetUserPassword = async (req, res) => {
   
       if (
         token !== tokenVerification.token ||
-        tokenVerification.status !== true ||
-        new Date() > new Date(tokenVerification.expiration)
+        tokenVerification.status !== true
       ) {
         console.error("Invalid or expired token", tokenVerification);
         return res.status(400).json({ message: 'Invalid or expired token' });
