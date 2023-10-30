@@ -4,16 +4,25 @@ const nodemailer = require('nodemailer');
 
 const storeToken = async (userId, token, expiration) => {
     try {
-        return await db('password_reset_token')
-        .insert({
-            user_id: userId,
-            token,
-            expiration
-        })
+
+        await db('password_reset_token')
+            .where({ user_id: userId })
+            .del();
+
+      
+        await db('password_reset_token')
+            .insert({
+                user_id: userId,
+                token,
+                expiration
+            });
+
+        return true; 
     } catch (e) {
         throw new ErrorServer(e.detail);
     }
 }
+
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -47,7 +56,6 @@ const getTokenByUserId = async (userId) => {
         const [tokenData] = await db('password_reset_token')
             .select('*')
             .where('user_id', userId)
-            .where('status', true);
 
         if (!tokenData) {
             return null;
@@ -65,22 +73,9 @@ const getTokenByUserId = async (userId) => {
 };
 
   
-  const markTokenAsUsed = async (tokenId) => {
-    try {
-    
-      await db('password_reset_token')
-        .where('id', tokenId)
-        .update({ status: false }); 
-  
-    } catch (e) {
-      throw new ErrorServer(e.detail);
-    }
-  };
-  
 
 module.exports = { 
     storeToken,
     sendPasswordResetEmail,
     getTokenByUserId,
-    markTokenAsUsed
  }

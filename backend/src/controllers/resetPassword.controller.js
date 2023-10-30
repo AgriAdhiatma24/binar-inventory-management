@@ -38,7 +38,7 @@ const forgotPassword = async (req, res) => {
         await resetPassword.sendPasswordResetEmail(email, token)
         return res
             .status(200)
-            .json(okResp("A reset token has been sent to your email"));
+            .json(okResp("A reset token has been sent to your email", userProfileData));
         
     } catch (e) {
         console.error("Error sending token", e);
@@ -51,33 +51,33 @@ const resetUserPassword = async (req, res) => {
     const token = req.body.token;
     const userId = req.params.userId;
     const newPassword = req.body.password;
-
+  
     try {
-        const tokenVerification = await resetPassword.getTokenByUserId(userId);
-
-        if (!tokenVerification || token !== tokenVerification.token || tokenVerification.status !== true) {
-            console.error("Invalid or expired token", tokenVerification);
-            return res.status(400).json({ message: 'Invalid or expired token' });
-        }
-
-        console.log("Token verified:", tokenVerification);
-
-        // Mark the token as used or invalid in the database
-        await resetPassword.markTokenAsUsed(tokenVerification.id);
-
-        console.log("Token marked as used");
-
-        // Reset the user's password
-        await user.updateUserPassword(userId, newPassword);
-
-        console.log("Password updated");
-
-        return res.status(200).json(okResp("User Password Updated Successfully"));
+      const tokenVerification = await resetPassword.getTokenByUserId(userId);
+  
+      if (!tokenVerification) {
+        return res.status(400).json({ message: 'Token not found' });
+      }
+  
+      if (
+        token !== tokenVerification.token ||
+        tokenVerification.status !== true ||
+        new Date() > new Date(tokenVerification.expiration)
+      ) {
+        console.error("Invalid or expired token", tokenVerification);
+        return res.status(400).json({ message: 'Invalid or expired token' });
+      }
+  
+  
+      await user.updateUserPassword(userId, newPassword);
+  
+      return res.status(200).json({ message: 'User Password Updated Successfully' });
     } catch (e) {
-        console.error("Error updating user password: ", e);
-        return res.status(e.code || 500).json(errorResp(e.message));
+      console.error("Error updating user password: ", e);
+      return res.status(e.code || 500).json({ message: 'An error occurred' });
     }
-};
+  };
+  
 
 module.exports = {
     forgotPassword,
