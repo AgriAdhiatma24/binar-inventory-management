@@ -103,10 +103,16 @@ function Home() {
 
   const onConfirm = async () => {
     try {
+      const deletedItem = items.find((item) => item.id === deleteId);
+
       const response = await axios.delete(
         `http://localhost:9000/api/v1/product/${deleteId}`
       );
       setTotalProducts((prevTotalProducts) => prevTotalProducts - 1);
+      setTotalStoreValue(
+        (prevTotalStoreValue) =>
+          prevTotalStoreValue - deletedItem.price * deletedItem.stock_amount
+      );
       getItemsData();
     } catch (error) {
       toast.error(error?.message || "Something went wrong!");
