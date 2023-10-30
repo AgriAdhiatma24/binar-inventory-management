@@ -1,6 +1,7 @@
 const db = require("../db/db.config");
 const { ErrorServer, ErrorNotFound } = require("../utils/errorHandlers");
 const nodemailer = require('nodemailer');
+const uuid = require('uuid');
 
 const storeToken = async (userId, token, expiration) => {
     try {
@@ -12,6 +13,7 @@ const storeToken = async (userId, token, expiration) => {
       
         await db('password_reset_token')
             .insert({
+                id: uuid.v4(),
                 user_id: userId,
                 token,
                 expiration
