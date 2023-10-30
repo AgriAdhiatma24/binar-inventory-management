@@ -2,18 +2,20 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function ResetPassword() {
-    const [token, setToken] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [formSubmitted, setFormSubmitted] = useState(false);
-    const [notification, setNotification] = useState(null);
-    const searchParams = useSearchParams()
+  const router = useRouter();
+  const [token, setToken] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [notification, setNotification] = useState(null);
+  const searchParams = useSearchParams();
 
   const handleInputChange = (e) => {
-      const { name, value } = e.target;
+    const { name, value } = e.target;
     if (name === "token") setToken(value);
     if (name === "newPassword") setNewPassword(value);
     if (name === "confirmPassword") setConfirmPassword(value);
@@ -32,8 +34,8 @@ export default function ResetPassword() {
       setNotification("Passwords do not match.");
       return;
     }
-    const userId = searchParams.get('id')
-    console.log(userId)
+    const userId = searchParams.get("id");
+    console.log(userId);
     try {
       const response = await axios.post(
         `http://localhost:9000/api/v1/reset-password/${userId}`,
@@ -46,13 +48,14 @@ export default function ResetPassword() {
       );
 
       if (response.status === 200) {
-        setNotification("Password reset successfully.");
+        toast.success("Password reset successfully!.");
+        router.push("/login");
       } else {
-        setNotification("Failed to reset the password. Please try again.");
+        toast.error("Failed to reset the password. Please try again.");
       }
     } catch (error) {
       console.error("Failed to reset password.", error);
-      setNotification("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.");
     }
   };
 

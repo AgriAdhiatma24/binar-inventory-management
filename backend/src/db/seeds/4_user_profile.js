@@ -12,6 +12,7 @@ exports.seed = async function (knex) {
       full_name: "John Doe",
       date_of_birth: "1999-01-01",
       address: "Central Java, Indonesia",
+      email: "johndoe@gmail.com",
     },
     {
       id: "4b1b18cf-8059-48b9-b361-1bc5748dc4ac",
@@ -19,6 +20,7 @@ exports.seed = async function (knex) {
       full_name: "Jean Doe",
       date_of_birth: "1999-01-02",
       address: "East Java, Indonesia",
+      email: "jeandoe@gmail.com",
     },
   ]);
 };
