@@ -163,7 +163,7 @@
   }
 
   aside .sidebar .sidebar-bottom a {
-    /* top: 20rem; */
+    top: 20rem;
     position: relative;
   }
 
@@ -214,7 +214,7 @@
   /* Card Insight */
   main .insight {
     display: grid;
-    /* grid-template-columns: repeat(4, 1fr); */
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
   }
 
@@ -544,7 +544,7 @@
   @media screen and (max-width: 1200px) {
     .container {
       width: 94%;
-      /* grid-template-columns: 7rem auto 23rem; */
+      grid-template-columns: 7rem auto 23rem;
     }
 
     aside .logo {
@@ -560,12 +560,12 @@
     }
 
     aside .sidebar a:last-child {
-      /* position: relative; */
+      position: relative;
       margin-top: 1.8rem;
     }
 
     main .insight {
-      /* grid-template-columns: 1fr; */
+      grid-template-columns: 1fr;
       gap: 0;
     }
 
@@ -590,7 +590,7 @@
   @media screen and (max-width: 768px) {
     .container {
       width: 100%;
-      /* grid-template-columns: 1fr; */
+      grid-template-columns: 1fr;
     }
 
     aside {
@@ -639,7 +639,7 @@
     }
 
     main {
-      /* margin-top: 8rem; */
+      margin-top: 8rem;
       padding: 0 1rem;
     }
 
@@ -647,7 +647,6 @@
       position: relative;
       margin: 3rem 0 0 0;
       width: 100%;
-    
     }
 
     main .transaction-table table {
