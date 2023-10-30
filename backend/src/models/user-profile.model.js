@@ -1,5 +1,6 @@
 const db = require("../db/db.config");
 const { ErrorServer, ErrorNotFound } = require("../utils/errorHandlers");
+const uuid = require("uuid");
 
 const getUserProfileByUserId = async (userId) => {
   try {
@@ -11,7 +12,9 @@ const getUserProfileByUserId = async (userId) => {
 
 const createUserProfile = async (userId, fullName, dateOfBirth, address, email) => {
   try {
+    const id = uuid.v4();
     return db("user_profile").insert({
+      id: id,
       user_id: userId,
       full_name: fullName,
       date_of_birth: dateOfBirth,

@@ -3,13 +3,13 @@ const { productModel, productCategoryModel, user, userProfile } = require("..");
 // const { ErrorServer, ErrorNotFound } = require("../../utils/errorHandlers");
 const { runMigration, destroyConnection } = require("../../db/run-migrations");
 
-/*-----------------------PRODUCT MODEL-------------------------------------------------------*/
 beforeAll(async () => {
   await runMigration();
 });
 afterAll(async () => {
   await destroyConnection();
 });
+/*-----------------------PRODUCT MODEL-------------------------------------------------------*/
 // ======================Test suite 1======================================
 describe("loadProducts", () => {
   // Test 1
@@ -151,10 +151,7 @@ describe("addProduct", () => {
       category_id: "a2bfdf4b-6961-4861-a629-5c243d004f95",
     };
 
-    // Call the addProduct function
     const resp = await productModel.addProduct(newProductData);
-
-    // Assert that the addedProduct matches the newProductData
     expect(resp.name).toBe(newProductData.name);
     expect(resp.price).toBe(newProductData.price);
     expect(resp.stock_amount).toBe(newProductData.stock_amount);
@@ -186,69 +183,68 @@ describe("deleteProduct", () => {
 
 /*-----------------------PRODUCT CATEGORY MODEL-------------------------------------------------------*/
 // ================= TEST SUITE 1 ==================================
-// describe("loadCategories", () => {
-//   it("should load product categories from the database", async () => {
-//     const categories = await productCategoryModel.loadCategories();
+describe("loadCategories", () => {
+  it("should load product categories from the database", async () => {
+    const categories = await productCategoryModel.loadCategories();
 
-//     expect(Array.isArray(categories)).toBe(true);
-//   });
-// });
+    expect(Array.isArray(categories)).toBe(true);
+  });
+});
 
 // ================= TEST SUITE 2 ==================================
-// describe("addCategory", () => {
-//   it("should add a new category", async () => {
-//     const newCategory = {
-//       id: "cf9fb621-9bb4-4c0c-a4c2-c3d501b1cb50",
-//       name: "Hardaware",
-//     };
-//     const addedCategory = await productCategoryModel.addCategory(newCategory);
-
-//     expect(addedCategory.id).toBe(newCategory.id);
-//     expect(addedCategory.name).toBe(newCategory.name);
-//   });
-// });
+describe("addCategory", () => {
+  it("should add a new category", async () => {
+    const newCategory = {
+      id: "cf9fb621-9bb4-4c0c-a4c2-c3d501b1cb50",
+      name: "Hardaware",
+    };
+    const addedCategory = await productCategoryModel.addCategory(newCategory);
+    console.log(addedCategory);
+    expect(addedCategory[0].name).toBe(newCategory.name);
+  });
+});
 
 // ================= TEST SUITE 3 ==================================
-// describe("deleteCategory", () => {
-//   // Test case 1: Deleting an existing category
-//   it("should delete an existing category", async () => {
-//     const categoryId = "a2bfdf4b-6961-4861-a629-5c243d004f95";
+describe("deleteCategory", () => {
+  // Test case 1: Deleting an existing category
+  it("should delete an existing category", async () => {
+    const categoryId = "a2bfdf4b-6961-4861-a629-5c243d004f95";
 
-//     const resp = await productCategoryModel.deleteCategory(categoryId);
+    const resp = await productCategoryModel.deleteCategory(categoryId);
 
-//     expect(resp.success).toBe(true);
-//     expect(resp.message).toBe("Product category deleted successfully");
-//   });
+    expect(resp.success).toBe(true);
+    expect(resp.message).toBe("Product category deleted successfully");
+  });
 
-//   // Test case 2: Deleting a non-existent category
-//   it("should throw an error when deleting a non-existent category", async () => {
-//     // Create a non-existent categoryId
-//     const categoryId = "12312312321";
-//     await expect(
-//       productCategoryModel.deleteCategory(categoryId)
-//     ).rejects.toThrow(`server error: categorytId is not defined`);
-//   });
-// });
+  // Test case 2: Deleting a non-existent category
+  it("should throw an error when deleting a non-existent category", async () => {
+    // Create a non-existent categoryId
+    const categoryId = "12312312321";
+    await expect(
+      productCategoryModel.deleteCategory(categoryId)
+    ).rejects.toThrow(`server error: categorytId is not defined`);
+  });
+});
 
 // ================= TEST SUITE 4 ==================================
-// describe("editCategory", () => {
-//   it("should edit an existing category", async () => {
-//     const categoryId = "9ccd22dd-2b19-4772-80b1-17a5e832c64a";
-//     const updatedData = {
-//       name: "Updated Category Name",
-//     };
+describe("editCategory", () => {
+  it("should edit an existing category", async () => {
+    const categoryId = "9ccd22dd-2b19-4772-80b1-17a5e832c64a";
+    const updatedData = {
+      name: "Updated Category Name",
+    };
 
-//     // Call the editCategory function
-//     const updatedCategory = await productCategoryModel.editCategory(
-//       categoryId,
-//       updatedData
-//     );
+    // Call the editCategory function
+    const updatedCategory = await productCategoryModel.editCategory(
+      categoryId,
+      updatedData
+    );
 
-//     // Assert that the updatedCategory matches the updated data
-//     expect(updatedCategory.name).toBe(updatedData.name);
-//     expect(updatedCategory.description).toBe(updatedData.description);
-//   });
-// });
+    // Assert that the updatedCategory matches the updated data
+    expect(updatedCategory.name).toBe(updatedData.name);
+    expect(updatedCategory.description).toBe(updatedData.description);
+  });
+});
 
 /*-----------------------USER MODEL-------------------------------------------------------*/
 // ================= TEST SUITE 1 ==================================
