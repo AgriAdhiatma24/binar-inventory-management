@@ -8,6 +8,7 @@ exports.up = function(knex) {
         table.uuid("user_id").references("id").inTable("user").onDelete("CASCADE");
         table.string("token").notNullable();
         table.timestamp("expiration").notNullable();
+        table.boolean("status").defaultTo(true);
       })
 };
 

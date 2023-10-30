@@ -44,9 +44,18 @@ const deleteUserProfile = async (userId) => {
   }
 };
 
+const getUserProfileByEmail = async (email) => {
+  try {
+    return db("user_profile").where("email", email).first()
+  } catch (e) {
+    throw new ErrorServer(e.detail);
+  }
+}
+
 module.exports = {
   getUserProfileByUserId,
   createUserProfile,
   updateUserProfile,
   deleteUserProfile,
+  getUserProfileByEmail
 };
