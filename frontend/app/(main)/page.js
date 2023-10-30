@@ -117,66 +117,48 @@ function Home() {
 
   return (
     <main>
-      {/* <div class='month-dropdown'>
-        <select name='month' id='month'>
-          <option value='current'>Current Month</option>
-          <option value='January'>January</option>
-          <option value='February'>February</option>
-          <option value='March'>March</option>
-          <option value='April'>April</option>
-          <option value='May'>May</option>
-          <option value='June'>June</option>
-          <option value='July'>July</option>
-          <option value='August'>August</option>
-          <option value='September'>September</option>
-          <option value='October'>October</option>
-          <option value='November'>November</option>
-          <option value='December'>December</option>
-        </select>
-      </div> */}
-
-      <div className="insight grid grid-rows-2 grid-cols-2">
-        <div className="balance w-60 grid place-items-center" id="balance">
+      <div className="insight">
+        <div className="balance" id="balance">
           <div className="bg-[var(--color-primary)] inline-flex items-center justify-center p-2 rounded-full">
             <Package size={28} className="text-white" />
           </div>
-          <div className="info mt-3" id="info-balance">
+          <div className="info" id="info-balance">
             <h3>Total Products</h3>
             <h1>{totalProducts}</h1>
           </div>
         </div>
-        <div className="income w-60 grid place-items-center" id="income">
+        <div className="income" id="income">
           <div className="bg-[var(--color-success)] inline-flex items-center justify-center p-2 rounded-full">
             <DollarSign size={28} className="text-white" />
           </div>
-          <div className="info mt-3" id="info-income">
+          <div className="info" id="info-income">
             <h3>Total Value</h3>
             <h1>{formatter.format(totalStoreValue)}</h1>
           </div>
         </div>
-        <div className="expenses w-60 grid place-items-center" id="expenses">
+        <div className="expenses" id="expenses">
           <div className="bg-[var(--color-danger)] inline-flex items-center justify-center p-2 rounded-full">
             <PackageX size={28} className="text-white" />
           </div>
-          <div className="info mt-3" id="info-expenses">
+          <div className="info" id="info-expenses">
             <h3>Out of Stock</h3>
             <h1>{outOfStockItem}</h1>
           </div>
         </div>
-        <div className="expenses w-60 grid place-items-center" id="expenses">
+        <div className="expenses" id="expenses">
           <div className="bg-[var(--color-warning)] inline-flex items-center justify-center p-2 rounded-full">
             <Folder size={28} className="text-white" />
           </div>
-          <div className="info mt-3" id="info-expenses">
+          <div className="info" id="info-expenses">
             <h3>All Categories</h3>
             <h1>{categoryCount}</h1>
           </div>
         </div>
       </div>
 
-      <div className="mt-16 grid">
+      <div className="mt-16">
         <div className="flex justify-between items-start">
-          <h2 className="text-xl font-bold mb-4">Inventory Items</h2>
+          <h2 className="text-2xl font-bold mb-4">Inventory Items</h2>
           <Link
             href="/product/add"
             className="bg-[var(--color-primary)] text-white flex items-center rounded-xl px-4 py-2 gap-x-2"
@@ -185,10 +167,10 @@ function Home() {
             Add Product
           </Link>
         </div>
-        <div className="bg-white rounded-3xl p-8">
-          <table className="w-fit">
+        <div className="w-full bg-white rounded-3xl p-8">
+          <table className="w-full">
             <thead>
-              <tr className="h-12 text-left">
+              <tr className="h-12 text-center">
                 <th>No</th>
                 <th>Name</th>
                 <th>Price</th>
@@ -226,7 +208,7 @@ function Home() {
             </tbody>
           </table>
         </div>
-        <a href="#">Show All</a>
+        {/* <a href='#'>Show All</a> */}
       </div>
       <Modal isOpen={showModal} onClose={onClose} onConfirm={onConfirm} />
     </main>
