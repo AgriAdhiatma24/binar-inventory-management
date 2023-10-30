@@ -97,7 +97,6 @@ const getOutOfStockItemsWithCount = async (req, res) => {
   try {
     const { outOfStockItems, outOfStockItemsCount } =
       await productModel.getOutOfStockProducts();
-    console.log(outOfStockItems);
     return res.status(200).json(
       okResp("Successfully get out of stock items", {
         outOfStockItems,
@@ -124,7 +123,6 @@ const insertProductController = async (req, res) => {
       category_id,
     };
     const addedProduct = await productModel.addProduct(newProductData);
-
     return res
       .status(200)
       .json(okResp("Successfully add product", addedProduct));

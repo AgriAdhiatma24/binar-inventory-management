@@ -21,6 +21,17 @@ function Home() {
   const [items, setItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [totalProducts, setTotalProducts] = useState("");
+  const [totalStoreValue, setTotalStoreValue] = useState("");
+  const [outOfStockItem, setOutOfStockItem] = useState("");
+  const [categoryCount, setCategoryCount] = useState("");
+
+  const formatter = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
 
   const getItemsData = async () => {
     const response = await axios.get(
@@ -30,8 +41,44 @@ function Home() {
     setItems(data);
   };
 
+  const getTotalProducts = async () => {
+    const response = await axios.get(
+      "http://localhost:9000/api/v1/product/products/count"
+    );
+    const data = response.data.data;
+    setTotalProducts(data);
+  };
+
+  const getTotalValue = async () => {
+    const response = await axios.get(
+      "http://localhost:9000/api/v1/product/products/store-values"
+    );
+    const data = response.data.data;
+    setTotalStoreValue(data);
+  };
+
+  const getOutOfStockItems = async () => {
+    const response = await axios.get(
+      "http://localhost:9000/api/v1/product/products/out-of-stock"
+    );
+    const data = response.data.data.outOfStockItemsCount;
+    setOutOfStockItem(data);
+  };
+
+  const getCategoryCount = async () => {
+    const response = await axios.get(
+      "http://localhost:9000/api/v1/product-category/category/count"
+    );
+    const data = response.data.data;
+    setCategoryCount(data);
+  };
+
   useEffect(() => {
     getItemsData();
+    getTotalProducts();
+    getTotalValue();
+    getOutOfStockItems();
+    getCategoryCount();
   }, []);
 
   const onClick = (id) => {
@@ -49,6 +96,7 @@ function Home() {
       const response = await axios.delete(
         `http://localhost:9000/api/v1/product/${deleteId}`
       );
+      setTotalProducts((prevTotalProducts) => prevTotalProducts - 1);
       getItemsData();
     } catch (error) {
       toast.error(error?.message || "Something went wrong!");
@@ -84,7 +132,7 @@ function Home() {
           </div>
           <div className="info mt-3" id="info-balance">
             <h3>Total Products</h3>
-            <h1>84</h1>
+            <h1>{totalProducts}</h1>
           </div>
         </div>
         <div className="income w-60 grid place-items-center" id="income">
@@ -93,7 +141,7 @@ function Home() {
           </div>
           <div className="info mt-3" id="info-income">
             <h3>Total Value</h3>
-            <h1>Rp.10.000</h1>
+            <h1>{formatter.format(totalStoreValue)}</h1>
           </div>
         </div>
         <div className="expenses w-60 grid place-items-center" id="expenses">
@@ -102,7 +150,7 @@ function Home() {
           </div>
           <div className="info mt-3" id="info-expenses">
             <h3>Out of Stock</h3>
-            <h1>2</h1>
+            <h1>{outOfStockItem}</h1>
           </div>
         </div>
         <div className="expenses w-60 grid place-items-center" id="expenses">
@@ -111,7 +159,7 @@ function Home() {
           </div>
           <div className="info mt-3" id="info-expenses">
             <h3>All Categories</h3>
-            <h1>5</h1>
+            <h1>{categoryCount}</h1>
           </div>
         </div>
       </div>
@@ -130,24 +178,22 @@ function Home() {
         <div className="bg-white rounded-3xl p-8">
           <table className="w-fit">
             <thead>
-              <tr className="h-12 text-left ">
+              <tr className="h-12 text-left">
                 <th>No</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Stock Amount</th>
-                <th>Image</th>
                 <th>Category</th>
                 <th className="w-30">Action</th>
               </tr>
             </thead>
-            <tbody id="table-body">
+            <tbody id="table-body" className="text-center">
               {items.map((item, index) => (
-                <tr>
+                <tr key={item.id}>
                   <td>{index + 1}</td>
                   <td>{item.name}</td>
-                  <td>{item.price}</td>
+                  <td>{formatter.format(item.price)}</td>
                   <td>{item.stock_amount}</td>
-                  <td>{item.image_url}</td>
                   <td>{item.category_id}</td>
                   <td>
                     <Link
