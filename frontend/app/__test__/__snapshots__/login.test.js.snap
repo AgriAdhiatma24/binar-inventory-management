@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login Page it renders the login form 1`] = `
+<div
+  className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden"
+>
+  <div
+    className="w-full p-6 bg-white rounded-md shadow-md lg:max-w-xl"
+  >
+    <h1
+      className="text-3xl font-bold text-center text-gray-700"
+    >
+      Binar Inventory Management
+    </h1>
+    <h2
+      className="text-xl font-bold text-center text-gray-700"
+    >
+      Login Form
+    </h2>
+    <form
+      className="mt-6"
+      onSubmit={[Function]}
+    >
+      <div
+        className="mb-4"
+      >
+        <label
+          className="block text-sm font-semibold text-gray-800"
+          htmlFor="username"
+        >
+          Username
+        </label>
+        <input
+          className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40  "
+          id="username"
+          name="username"
+          onChange={[Function]}
+          placeholder="Enter Username"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="mb-2"
+      >
+        <label
+          className="block text-sm font-semibold text-gray-800"
+          htmlFor="password"
+        >
+          Password
+        </label>
+        <div
+          className="mb-4 flex"
+        >
+          <input
+            className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40  "
+            id="password"
+            name="password"
+            onChange={[Function]}
+            placeholder="Enter Password"
+            type="password"
+            value=""
+          />
+          <span
+            className="flex items-center justify-center mt-1"
+            onClick={[Function]}
+          >
+            <i
+              className="absolute mr-10"
+              fill="currentColor"
+              style={
+                {
+                  "display": "inline-block",
+                }
+              }
+            >
+              <svg
+                fill="none"
+                height={15}
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                style={
+                  {
+                    "display": "inline-block",
+                    "verticalAlign": "middle",
+                  }
+                }
+                viewBox="0 0 24 24"
+                width={15}
+              >
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                />
+                <line
+                  x1="1"
+                  x2="23"
+                  y1="1"
+                  y2="23"
+                />
+              </svg>
+            </i>
+          </span>
+        </div>
+      </div>
+      <div
+        className="flex justify-between items-center"
+      >
+        <h2
+          className="mb-2 text-sm pt-2"
+        >
+          Don't have an account?
+          <span
+            className="text-lime-600 cursor-pointer ml-1 font-bold"
+            onClick={[Function]}
+          >
+            Sign up
+          </span>
+        </h2>
+        <span
+          className="cursor-pointer ml-1 font-bold"
+          onClick={[Function]}
+        >
+          Forgot Password?
+        </span>
+      </div>
+      <div
+        className="mt-2"
+      >
+        <button
+          className="w-full px-4 mt-6 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+          type="submit"
+        >
+          Sign In
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
